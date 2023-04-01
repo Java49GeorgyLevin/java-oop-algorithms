@@ -2,7 +2,7 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
+import telran.util.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class ArrayListTest {
 	
 	@Test
 		void testAddIndex() {
-		telran.util.ArrayList<Integer> num =  new telran.util.ArrayList<>();
+		ArrayList<Integer> num =  new ArrayList<>();
 		for(int i = 0; i < 5; i++) {
 		num.add(i * 2);
 		}
@@ -42,7 +42,7 @@ class ArrayListTest {
 	
 	@Test
 		void testRemoveIndex() {
-		telran.util.ArrayList<Integer> num = new telran.util.ArrayList<>();
+		ArrayList<Integer> num = new ArrayList<>();
 		for(int i = 0; i < 5; i++) {
 		num.add(i * 3);
 		}

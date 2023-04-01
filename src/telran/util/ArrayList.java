@@ -34,7 +34,7 @@ public class ArrayList<T> implements List<T> {
 		if(size == array.length) {
 			reallocate();
 		}
-		System.arraycopy(array, index, array, index+1, array.length-index-1);
+		System.arraycopy(array, index, array, index+1, size-index);
 		array[index] = obj;
 		size++;
 	}
@@ -42,7 +42,7 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		T removed = array[index];
-		System.arraycopy(array, index+1, array, index, array.length-index-1);
+		System.arraycopy(array, index+1, array, index, size-index);
 		array = Arrays.copyOf(array, array.length - 1);
 		size--;
 		return removed;
