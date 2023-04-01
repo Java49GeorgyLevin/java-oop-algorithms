@@ -2,6 +2,8 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import telran.util.*;
 
 import org.junit.jupiter.api.Test;
@@ -43,19 +45,20 @@ class ArrayListTest {
 	@Test
 		void testRemoveIndex() {
 		ArrayList<Integer> num = new ArrayList<>();
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 6; i++) {
 		num.add(i * 3);
 		}
+//System.out.println(num);
 		assertEquals(12, num.get(4));
-		assertEquals(5, num.size());
+		assertEquals(6, num.size());
 		assertEquals(12, num.remove(4));
 		assertEquals(6, num.get(2));
-		assertEquals(4, num.size());
+		assertEquals(5, num.size());
 		assertEquals(6, num.remove(2));
 		assertEquals(0, num.get(0));
-		assertEquals(3, num.size());
+		assertEquals(4, num.size());
 		assertEquals(0, num.remove(0));
-		assertEquals(2, num.size());
+		assertEquals(3, num.size());
 
 
 		

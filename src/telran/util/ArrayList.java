@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
-	private int size;	
+	private int size;
 	@SuppressWarnings("unchecked")
 	public ArrayList(int capacity) {
 		array = (T[]) new Object[capacity];
@@ -42,8 +42,14 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		T removed = array[index];
+System.out.println(index);
+System.out.println("in" + Arrays.toString(array));
+	//System.arraycopy(array, index+1, array, index, size-index-1);
 		System.arraycopy(array, index+1, array, index, size-index);
-		array = Arrays.copyOf(array, array.length - 1);
+//System.out.println(Arrays.toString(array));
+	//array = Arrays.copyOf(array, size-1);
+	//array = Arrays.copyOf(array, size-1);
+System.out.println("out" + Arrays.toString(array));
 		size--;
 		return removed;
 	}
