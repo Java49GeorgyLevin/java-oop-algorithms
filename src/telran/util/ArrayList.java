@@ -59,13 +59,36 @@ public class ArrayList<T> implements List<T> {
 	}
 	@Override
 	public boolean remove(T pattern) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean f = false;
+		int i = size;
+		while (i > 0) {
+			i--;
+			if (isEqual(array[i], pattern)) {
+				remove(i);
+				f = true;
+			}
+		}
+System.out.println(Arrays.toString(array));
+System.out.println(size);
+		return f;
 	}
 	@Override
 	public T[] toArray(T[] array) {
+		System.out.println(Arrays.toString(array));
+		T[] toAr = array;
+		if(array.length >= size) {			
+			System.arraycopy(this.array, 0, toAr, 0, size);			
+			if(toAr.length > size) {
+				toAr[size] = null;
+						};			
+		} else {
+			toAr = Arrays.copyOf(this.array, size);
+		}
+
 		// TODO Auto-generated method stub
-		return null;
+		System.out.println(Arrays.toString(array));
+		System.out.println(Arrays.toString(toAr));
+		return toAr;
 	}
 	@Override
 	public int indexOf(T pattern) {
@@ -86,9 +109,15 @@ public class ArrayList<T> implements List<T> {
 	}
 	@Override
 	public int lastIndexOf(T pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+		int res = -1;
+		int index = size;
+		while(index >= 0 && res == -1) {
+			if (isEqual(array[index], pattern)) {
+				res = index;
+			}
+			index--;
+		}
+		return res;
 	}
-
 
 }
