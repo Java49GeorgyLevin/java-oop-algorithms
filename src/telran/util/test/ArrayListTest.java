@@ -1,8 +1,6 @@
 package telran.util.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;import java.lang.reflect.Array;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -13,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 
 class ArrayListTest {
+private static final int BIG_LENGTH = 100000;
 List<Integer> list;
 Integer[] numbers = {10, -20, 7, 50, 100, 30};
 @BeforeEach
@@ -56,45 +55,87 @@ void setUp() {
 	@Test
 	void testGetIndex() {
 		assertEquals(10, list.get(0));
-	}	
+	}
+	@Test
+	void testRemovePattern() {
+		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
+		Integer [] expectedNo10_50 = { -20, 7,  100, 30};
+		Integer [] expectedNo10_50_30 = { -20, 7,  100};
+		assertTrue(list.remove(numbers[0]));
+		runTest(expectedNo10);
+		Integer objToRemove = 50;
+		assertTrue(list.remove(objToRemove));
+		runTest(expectedNo10_50);
+		assertTrue(list.remove((Integer)30));
+		runTest(expectedNo10_50_30);
+		assertFalse(list.remove((Integer)50));
+	}
 	@Test
 	void testIndexOf() {
-		list.add(3, 10);
-		assertEquals(0, list.indexOf(10));
+		list.add(3, 1280);
+		assertEquals(3, list.indexOf(1280));
 		assertEquals(-1, list.indexOf(null));
 	}
 	@Test
 	void testLastIndexOf() {
-		assertEquals(0, list.lastIndexOf(10));
-		list.add(5, 10);
-		assertEquals(5, list.lastIndexOf(10));
-		assertEquals(-1, list.lastIndexOf(314));
+		list.add(3, 10);
+		assertEquals(3, list.lastIndexOf(10));
+		assertEquals(-1, list.lastIndexOf(null));
 	}
 	@Test
-	void testRemovePattern() {
-		list.add(100);
-		list.add(30);
-		list.add(100);
-		Integer r10 = 10;
-		Integer r30 = 30;
-		Integer r100 = 100;
-		Integer r314 = 314;
-		assertFalse(list.remove(r314));
-		assertTrue(list.remove(r10));
-		assertTrue(list.remove(r100));
-		assertTrue(list.remove(r30));
-	}
-	@Test
-	void testToArray() {
-		Integer[] toAr = {};
-		Object[] arList = list.toArray(toAr);
-		Integer[] arExpected = Arrays.copyOf(arList, arList.length, Integer[].class);
-		runTest(arExpected);
-		Integer[] toAr10 = new Integer[10];
-		for(int i = 0; i <10; i++) {
-			toAr10[i] = 22;  
+	void testToArrayForBigArray() {
+		Integer bigArray[] = new Integer[BIG_LENGTH];
+		for(int i = 0; i < BIG_LENGTH; i++) {
+			bigArray[i] = 10;
 		}
-		assertArrayEquals(toAr10, list.toArray(toAr10));
+		Integer actualArray[] = list.toArray(bigArray);
+		int size = list.size();
+		for(int i = 0; i < size; i++) {
+			assertEquals(numbers[i], actualArray[i]);
+		}
+		assertNull(actualArray[size]);
+		assertTrue(bigArray == actualArray);
+	}
+	@Test
+	void testToArrayForEmptyArray() {
+		Integer actualArray[] =
+				list.toArray(new Integer[0]);
+		assertArrayEquals(numbers, actualArray);
+	}
+	@Test
+	void testSort() {
+		Integer expected[] = {-20, 7, 10, 30,  50, 100 };
+		list.sort();
+		assertArrayEquals(expected,
+				list.toArray(new Integer[0]));
+	}
+	@Test
+	void testSortPersons() {
+		List<Person> persons = new ArrayList<>();
+		Person p1 = new Person(123, 25, "Vasya");
+		Person p2 = new Person(124, 20, "Asaf");
+		Person p3 = new Person(120, 50, "Arkady");
+		persons.add(p1);
+		persons.add(p2);
+		persons.add(p3);
+		Person expected[] = {p3, p1, p2};
+		persons.sort();
+		assertArrayEquals(expected, persons.toArray(new Person[0]));
+	}
+	@Test
+	void testSortPersonsByAge() {
+		List<Person> persons = new ArrayList<>();
+		Person p1 = new Person(123, 25, "Vasya");
+		Person p2 = new Person(124, 20, "Asaf");
+		Person p3 = new Person(120, 50, "Arkady");
+		persons.add(p1);
+		persons.add(p2);
+		persons.add(p3);
+		Person expected[] = {p3, p1, p2};
+		persons.sort(new PersonsAgeComparator());
+		assertArrayEquals(expected,
+				persons.toArray(new Person[0]));
+		
 	}
 	private void runTest(Integer[] expected) {
 		int size = list.size() ;
