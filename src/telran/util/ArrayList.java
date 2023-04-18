@@ -7,7 +7,7 @@ public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
-
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList(int capacity) {
 		array = (T[]) new Object[capacity];
@@ -118,16 +118,43 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void sort() {
-		Arrays.sort(array, 0, size);
-		
+	public void sort() {	
+		int how = size-1;
+		boolean b;
+		do {
+			b = false;
+			for(int i = 0;i < how; i++) {				
+				if( ((Comparable<T>)array[i]).compareTo(array[i+1]) > 0 ) {
+					b = true;
+					T bubble = array[i];
+					array[i] = array[i+1];
+					array[i+1] = bubble;
+				}
+			} 		
+		} while (b == true);
 	}
+	
 
 	@Override
 	public void sort(Comparator<T> comp) {
-		Arrays.sort(array,  0, size, comp);
-		
+		int how = size-1;
+		boolean b;
+		do {
+			b = false;
+			for(int i = 0;i < how; i++) {
+				if(comp.compare(array[i], array[i+1]) > 0) {
+					b = true;
+					T bubble = array[i];
+					array[i] = array[i+1];
+					array[i+1] = bubble;
+				}
+			} 		
+		} while (b == true);
 	}
-
+	
+		
 }
+
+

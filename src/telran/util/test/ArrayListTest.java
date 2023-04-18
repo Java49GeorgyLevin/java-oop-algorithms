@@ -1,6 +1,7 @@
 package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -137,6 +138,16 @@ void setUp() {
 				persons.toArray(new Person[0]));
 		
 	}
+	@Test
+	void testEvenOddComparator() {
+		Integer[] expectedAdd17 = {10, -20, 7, 50, 100, 30, 17};
+		list.add(17);
+		runTest(expectedAdd17);
+		Integer[] expectedEvenOddComp = {-20, 10, 30, 50, 100, 17, 7};
+		list.sort(new EvenOddComparator());
+		runTest(expectedEvenOddComp);
+	}
+	
 	private void runTest(Integer[] expected) {
 		int size = list.size() ;
 		Integer [] actual = new Integer[expected.length];
