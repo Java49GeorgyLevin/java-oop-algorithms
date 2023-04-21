@@ -2,12 +2,13 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
-	
+
 	@SuppressWarnings("unchecked")
 	public ArrayList(int capacity) {
 		array = (T[]) new Object[capacity];
@@ -118,43 +119,61 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
+	//@SuppressWarnings("unchecked")
 	@SuppressWarnings("unchecked")
 	@Override
-	public void sort() {	
-		int how = size-1;
-		boolean b;
-		do {
-			b = false;
-			for(int i = 0;i < how; i++) {				
-				if( ((Comparable<T>)array[i]).compareTo(array[i+1]) > 0 ) {
-					b = true;
-					T bubble = array[i];
-					array[i] = array[i+1];
-					array[i+1] = bubble;
-				}
-			} 		
-		} while (b == true);
+	public void sort() {
+		sort((Comparator<T>)Comparator.naturalOrder());
+		
 	}
-	
 
 	@Override
 	public void sort(Comparator<T> comp) {
-		int how = size-1;
-		boolean b;
+		int n = size;
+		boolean flUnSort = true;
 		do {
-			b = false;
-			for(int i = 0;i < how; i++) {
-				if(comp.compare(array[i], array[i+1]) > 0) {
-					b = true;
-					T bubble = array[i];
-					array[i] = array[i+1];
-					array[i+1] = bubble;
+			flUnSort = false;
+			n--;
+			for(int i = 0; i < n; i++) {
+				if (comp.compare(array[i], array[i + 1]) > 0) {
+					swap(i);
+					flUnSort = true;
 				}
-			} 		
-		} while (b == true);
-	}
-	
+			}
+		}while(flUnSort);
 		
+	}
+
+	private void swap(int i) {
+		T tmp = array[i];
+		array[i] = array[i + 1];
+		array[i + 1] = tmp;
+		
+	}
+
+	@Override
+	public int indexOf(Predicate<T> predicate) {
+		int res = -1;
+		int index = 0;
+		while (index < size && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index++;
+		}
+		return res;
+	}
+
+	@Override
+	public int lastIndexOf(Predicate<T> predicate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
-
-
