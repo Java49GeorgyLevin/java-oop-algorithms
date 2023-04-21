@@ -1,6 +1,7 @@
 package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -160,10 +161,33 @@ void setUp() {
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
 	}
 	@Test
-	void testRemoveIfAll() {
-		assertTrue(list.removeIf(a -> true));
-		assertEquals(0, list.size());
+	void testLastIndexOfPredicate() {
+		assertEquals(0, list.lastIndexOf(a -> a == -20));
+		list.add(-20);
+		assertEquals(list.size(), list.lastIndexOf(a -> a == -20));
+		assertEquals(7, list.lastIndexOf(a -> a == -20));
 	}
+	
+	
+	@Test
+	void testRemoveIfAll() {
+		Integer[] expected = list.toArray(new Integer[0]);
+		int n = list.size();
+		for(int i=0;i < n;i++) {
+			list.add(i*2 + 1, 300);
+		}
+	
+			Integer[] expected300 = {10, 300, -20, 300, 7, 300, 50, 300, 100, 300, 30, 300};			
+			assertArrayEquals(expected300, list.toArray(new Integer[0]));
+			list.add(0, 300);			
+			
+			assertTrue(list.removeIf(a ->  a == 300));
+			assertArrayEquals(expected, list.toArray(new Integer[0]));
+
+			assertTrue(list.removeIf(a -> true));
+			assertEquals(0, list.size());
+	}
+	
 	private void runTest(Integer[] expected) {
 		int size = list.size() ;
 		Integer [] actual = new Integer[expected.length];
