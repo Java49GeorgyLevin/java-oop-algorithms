@@ -172,22 +172,21 @@ public class ArrayList<T> implements List<T> {
 			if (predicate.test(array[index])) {
 				res = index;
 			}
+			index--;
 		}
 		return res;
 	}
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		boolean upd = false;
+		int oldSize = size;
 		int nDelete = size-1;
 		while(nDelete >= 0) {
 			if (predicate.test(array[nDelete])) {
-				System.arraycopy(array, nDelete+1, array, nDelete, size - nDelete);
-				size--;
-				upd = true;
+				remove(nDelete);
 			}
 			nDelete--;
 		}
-		return upd;
+		return oldSize != size;
 	}
 }
