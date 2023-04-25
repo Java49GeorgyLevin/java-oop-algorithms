@@ -3,9 +3,6 @@ package telran.algorithm;
 public class InitialAlgorithms {
       public static void sortShortPositive(short [] array) {
     	  int [] helper = new int[Short.MAX_VALUE];
-    	  //helper[index] => count of occurrences for number index in array
-    	  //helper[1000] = 2 => number 1000 occurs twice in the source array
-    	  //helper[2] = 0;
     	  for(int i = 0; i < array.length; i++) {
     		  helper[array[i]]++; 
     	  }
@@ -15,14 +12,21 @@ public class InitialAlgorithms {
     			  array[ind++] = (short) i;
     		  }
     	  }
-
       }
       public static boolean isSum2(short[] array, short sum) {
-    	  //returns true if there are two numbers in the given array,
-    	  // sum of which equals the given sum value
-    	  //otherwise false
-    	  //TODO
-    	  return false;
+    	  boolean f = false;
+    	  int j = 0;
+    	  while(j < array.length-1 && !f) {
+    		  short second =  (short) (sum - array[j++]);
+    		  for(int i = j;i < array.length;i++) {
+    			  if(array[i] == second) {
+    				  f = true;
+    			  }
+    	  		}
+    	  }    	  
+
+    	  
+    	  return f;
       }
       public static short getMaxPositiveWithNegativeReflect(short[] array) {
     	  //returns maximal positive number, for which there is the negative image
