@@ -43,6 +43,10 @@ public class InitialAlgorithms {
     	  return biggest;
       }
       public static void bubbleSort(short[] array) {
+    	  if(array.length > 100001) {
+    		  runSortedArrayTest(array);
+    	  } else {
+    	  
     	  int j = 0;
     	  boolean f = false;
     	  while (j < array.length && !f) {
@@ -56,6 +60,31 @@ public class InitialAlgorithms {
     			  }
     		  }
     	  j++;    		  
+    	  }
+    	 }
+      }
+      
+       static void runSortedArrayTest(short [] array) {
+    	  int [] helperPos = new int[Short.MAX_VALUE];
+    	  int [] helperNeg = new int[Short.MAX_VALUE];
+    	  for(int i = 0; i < array.length; i++) {
+//    		 array[i] > 0 ? helperPos[array[i]]++ : helperNeg[-array[i]]++;
+    		 if(array[i] > 0) { 
+    			 helperPos[array[i]]++; 
+    			 } else { 
+    			 helperNeg[-array[i]]++;
+    			 }
+    	  }
+    	  int ind = 0;
+    	  for(int i = helperNeg.length - 1; i >= 0; i--) {
+    		  for(int j = 0; j < helperNeg[i]; j++) {
+    			  array[ind++] = (short) -i;
+    		  }
+    	  }
+    	  for(int i = 0; i < helperPos.length; i++) {
+    		  for(int j = 0; j < helperPos[i]; j++) {
+    			  array[ind++] = (short) i;
+    		  }
     	  }
       }
 }

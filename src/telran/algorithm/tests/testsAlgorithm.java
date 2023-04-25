@@ -19,6 +19,15 @@ class testsAlgorithm {
 	void testSortShortPositive() {
 		sortShortPositive(sortShortPos);
 		assertArrayEquals(sortShortPosSort, sortShortPos);
+		short [] ar100th =  new short [100000];
+		randomArPos(ar100th);
+		short [] ar100rnd = Arrays.copyOf(ar100th, ar100th.length);
+		sortShortPositive(ar100th);
+		short [] ar100positive = Arrays.copyOf(ar100th, ar100th.length);
+		bubbleSort(ar100th);
+		short [] ar100bubble = Arrays.copyOf(ar100th, ar100th.length);
+		assertArrayEquals(ar100positive, ar100bubble);
+		System.out.println("end");
 
 	}
 	
@@ -49,6 +58,28 @@ class testsAlgorithm {
 	void testBubbleSort() {
 		bubbleSort(sortShortPos);
 		assertArrayEquals(sortShortPosSort, sortShortPos);
+		short [] ar100th =  new short [100000];
+		randomAr(ar100th);
+		bubbleSort(ar100th);
+		System.out.println("end");
+		short [] ar1mln =  new short [1000001];
+		randomAr(ar1mln);
+		bubbleSort(ar1mln);
+		System.out.println(ar1mln[0]);
+		System.out.println(ar1mln[1000000]);
+		
+	}
+	
+	void randomArPos (short [] ar) {
+		for(int i = 0; i < ar.length; i++) {
+			ar[i] = (short)(Math.random()* Short.MAX_VALUE);
+		}
+	}
+	
+	void randomAr (short [] ar) {
+		for(int i = 0; i < ar.length; i++) {
+			ar[i] = (short)((Math.random() - 0.5)* Short.MAX_VALUE);
+		}
 	}
 
 }
