@@ -12,6 +12,7 @@ class testsAlgorithm {
 	short [] sortShortPos = {1600, 2500, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91};	
 	short [] sortShortPosSort = {0, 1, 4, 9, 16, 25, 36, 49, 64, 91, 1600, 2500, 3600, 4900, 6400, 9100};
 	short [] sortShort = {1600, 2500, -100, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91};
+	short [] shortReflect = {1600, 2500, -100, -1600, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91, -2500};
 
 
 	@Test
@@ -34,6 +35,20 @@ class testsAlgorithm {
 		sortShort[sortShort.length-1] = -4900;
 		assertTrue(isSum2(sortShort, (short)0));
 		assertFalse(isSum2(sortShortPos, (short)-2500));
+	}
+	
+	@Test
+	void testGetMaxPositiveWithNegativeReflect() {
+		assertEquals(2500, getMaxPositiveWithNegativeReflect(shortReflect));
+		shortReflect[1] = -9100;
+		assertEquals(9100, getMaxPositiveWithNegativeReflect(shortReflect));
+		assertEquals(-1, getMaxPositiveWithNegativeReflect(sortShort));
+		
+	}
+	@Test
+	void testBubbleSort() {
+		bubbleSort(sortShortPos);
+		assertArrayEquals(sortShortPosSort, sortShortPos);
 	}
 
 }
