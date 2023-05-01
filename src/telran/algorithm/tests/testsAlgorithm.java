@@ -1,85 +1,90 @@
 package telran.algorithm.tests;
-import static telran.algorithm.InitialAlgorithms.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static telran.algorithm.InitialAlgorithms.*;
+
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import static telran.algorithm.InitialAlgorithms.*;
+class InitialAlgorithmsTest {
+ int N_NUMBERS = 10000000;
+ short[] array;
 
-class testsAlgorithm {
-	
-	short [] sortShortPos = {1600, 2500, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91};	
-	short [] sortShortPosSort = {0, 1, 4, 9, 16, 25, 36, 49, 64, 91, 1600, 2500, 3600, 4900, 6400, 9100};
-	short [] sortShort = {1600, 2500, -100, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91};
-	short [] shortReflect = {1600, 2500, -100, -1600, 3600, 4900, 6400, 9100, 0, 1, 4, 9, 16, 25, 36, 49, 64, 91, -2500};
-
-
+ void setUpBigArray() {
+	 
+	 array = new short[N_NUMBERS];
+	 for(int i = 0; i < N_NUMBERS; i++) {
+		 array[i] = (short) (Math.random() * Short.MAX_VALUE);
+	 }
+ }
 	@Test
-	void testSortShortPositive() {
-		sortShortPositive(sortShortPos);
-		assertArrayEquals(sortShortPosSort, sortShortPos);
-		short [] ar100th =  new short [100000];
-		randomArPos(ar100th);
-		short [] ar100rnd = Arrays.copyOf(ar100th, ar100th.length);
-		sortShortPositive(ar100th);
-		short [] ar100positive = Arrays.copyOf(ar100th, ar100th.length);
-		bubbleSort(ar100th);
-		short [] ar100bubble = Arrays.copyOf(ar100th, ar100th.length);
-		assertArrayEquals(ar100positive, ar100bubble);
-		System.out.println("end");
-
+	@Disabled
+	void bubbleSortTest() {
+		setUpBigArray();
+		bubbleSort(array);
+		runTest();
 	}
-	
 	@Test
-	void testIsSum2 ( ) {
-		short short49 = 49;
-		short short4949 = 4949;
-		short short4800 = 4800;
-		assertTrue(isSum2(sortShortPos, short49));
-		assertTrue(isSum2(sortShortPos, short4949));
-		assertFalse(isSum2(sortShortPos, (short)0));
-		assertTrue(isSum2(sortShort, short4800));
-		sortShort = Arrays.copyOf(sortShort, sortShort.length+1);
-		sortShort[sortShort.length-1] = -4900;
-		assertTrue(isSum2(sortShort, (short)0));
-		assertFalse(isSum2(sortShortPos, (short)-2500));
+	void SortPositiveShortTest() {
+		setUpBigArray();
+		sortShortPositive(array);
+		runTest();
 	}
-	
-	@Test
-	void testGetMaxPositiveWithNegativeReflect() {
-		assertEquals(2500, getMaxPositiveWithNegativeReflect(shortReflect));
-		shortReflect[1] = -9100;
-		assertEquals(9100, getMaxPositiveWithNegativeReflect(shortReflect));
-		assertEquals(-1, getMaxPositiveWithNegativeReflect(sortShort));
+	private void runTest() {
+		for(int i = 1; i < N_NUMBERS; i++) {
+			assertTrue(array[i - 1] <= array[i]);
+		}
 		
 	}
 	@Test
-	void testBubbleSort() {
-		bubbleSort(sortShortPos);
-		assertArrayEquals(sortShortPosSort, sortShortPos);
-		short [] ar100th =  new short [100000];
-		randomAr(ar100th);
-		bubbleSort(ar100th);
-		System.out.println("end");
-		short [] ar1mln =  new short [1000001];
-		randomAr(ar1mln);
-		bubbleSort(ar1mln);
-		System.out.println(ar1mln[0]);
-		System.out.println(ar1mln[1000000]);
+	void isSum2Test() {
+		short[] array = {30000, 1, 5, 2, 10000, 0, 500,0};
+		short[] array1 = {30000, 1, 5, 2, 10000, 0, 500,0, Short.MAX_VALUE};
+		assertTrue(isSum2(array, (short)30000));
+		assertTrue(isSum2(array, (short)7));
+		assertFalse(isSum2(array, (short)30003));
+		assertFalse(isSum2(array, (short)8));
+		assertTrue(isSum2(array1, Short.MIN_VALUE));
 		
 	}
-	
-	void randomArPos (short [] ar) {
-		for(int i = 0; i < ar.length; i++) {
-			ar[i] = (short)(Math.random()* Short.MAX_VALUE);
-		}
+	@Test
+	void getMaxPositiveWithNegativeTest() {
+		short[] array = {1, 1, 1, -1, 20, 100,200, 100 -100, -100, -20, -40, 80};
+		short[] array1 = {-40, 1, -40, -6, 2, 3, 40};
+		short[] array2 = {40, 1, 2, 3, 40, -30};
+		assertEquals(100,
+				getMaxPositiveWithNegativeReflect(array));
+		assertEquals(40,
+				getMaxPositiveWithNegativeReflect(array1));
+		assertEquals(-1,
+				getMaxPositiveWithNegativeReflect(array2));
 	}
-	
-	void randomAr (short [] ar) {
-		for(int i = 0; i < ar.length; i++) {
-			ar[i] = (short)((Math.random() - 0.5)* Short.MAX_VALUE);
+	@Test
+	@Disabled
+	void maxValueComplexityNTest() {
+		assertEquals(Long.MAX_VALUE, getMaxValueComplexityN());
+	}
+	@Test
+	void maxValueComplexityLogNTest() {
+		assertEquals(Long.MAX_VALUE, getMaxValueComplexityLogN());
+	}
+	private Long getMaxValueComplexityN() {
+		long res = 1;
+		while(res > 0) {
+			res++;
 		}
+		return res - 1;
+	}
+	private Long getMaxValueComplexityLogN() {
+		long res = 1;
+		while(res > 0) {
+			res *= 2;
+		}
+		return res - 1;
 	}
 
 }
