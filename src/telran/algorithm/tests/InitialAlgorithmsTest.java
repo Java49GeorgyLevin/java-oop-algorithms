@@ -1,15 +1,11 @@
 package telran.algorithm.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import static telran.algorithm.InitialAlgorithms.*;
 
-import java.util.Arrays;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import static telran.algorithm.InitialAlgorithms.*;
+
 class InitialAlgorithmsTest {
  int N_NUMBERS = 10000000;
  short[] array;
@@ -85,6 +81,18 @@ class InitialAlgorithmsTest {
 			res *= 2;
 		}
 		return res - 1;
+	}
+	
+	@Test
+	void binarySearchTest() {
+		Integer ar[] = { 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 20, 40 };
+		assertEquals(-14, binarySearch(ar, 3, Integer::compare));
+		assertEquals(3, binarySearch(ar, 2, Integer::compare ));
+		assertEquals(-1, binarySearch(ar, 0, Integer::compare));
+		assertEquals(13, binarySearch(ar, 4, Integer::compare));
+		assertEquals(0, binarySearch(ar, 1, Integer::compare));
+		assertEquals(-16, binarySearch(ar, 25, Integer::compare));
+		assertEquals(-17, binarySearch(ar, 45, Integer::compare));		
 	}
 
 }
