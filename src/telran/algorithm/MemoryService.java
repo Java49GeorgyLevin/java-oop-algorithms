@@ -9,10 +9,10 @@ public static int getMaxAvailableSize() {
 		try {
 			middle = min / 2 + max / 2;
 			byte[] array = new byte[middle];
-			min = middle;
+			min = middle + 1;
 //			System.out.println("max_" + max);
 //			System.out.println("min_" + min);
-			array = null;
+//			array = null;
 			} catch(OutOfMemoryError e) {
 			max = middle - 1;
 			
