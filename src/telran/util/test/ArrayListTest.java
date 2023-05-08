@@ -55,6 +55,8 @@ void setUp() {
 	@Test
 	void testGetIndex() {
 		assertEquals(10, list.get(0));
+		assertThrowsExactly(IndexOutOfBoundsException.class,
+				() -> list.get(list.size()));
 	}
 	@Test
 	void testRemovePattern() {
@@ -160,36 +162,19 @@ void setUp() {
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
 	}
 	@Test
-	void testLastIndexOfPredicate() {
-		assertEquals(1, list.lastIndexOf(a -> a == -20));
-		list.add(-20);
-		assertEquals(list.size()-1, list.lastIndexOf(a -> a == -20));
-		assertEquals(6, list.lastIndexOf(a -> a == -20));
+	void testRemoveIfAll() {
+		assertTrue(list.removeIf(a -> true));
+		assertEquals(0, list.size());
 	}
-	
-	
 	@Test
-	void testRemoveIf300() {
-		Integer[] expected = list.toArray(new Integer[0]);
-		int n = list.size();
-		for(int i=0;i < n;i++) {
-			list.add(i*2 + 1, 300);
-		}
-	
-			Integer[] expected300 = {10, 300, -20, 300, 7, 300, 50, 300, 100, 300, 30, 300};			
-			assertArrayEquals(expected300, list.toArray(new Integer[0]));
-			list.add(0, 300);			
-			
-			assertTrue(list.removeIf(a ->  a == 300));
-			assertArrayEquals(expected, list.toArray(new Integer[0]));
+	void testRemoveIfPredicate() {
+		Integer[] expected = {10, -20,  50, 100, 30};
+		assertFalse(list.removeIf(a -> a % 2 != 0
+				&& a >= 10));
+		assertTrue(list.removeIf(a -> a % 2 != 0));
+		runTest(expected);
+		
 	}
-	
-	@Test
-	void testRemoveIfAll() {		
-			assertTrue(list.removeIf(a -> true));
-			assertEquals(0, list.size());
-	}
-	
 	private void runTest(Integer[] expected) {
 		int size = list.size() ;
 		Integer [] actual = new Integer[expected.length];

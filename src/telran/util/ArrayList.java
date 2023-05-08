@@ -54,6 +54,9 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 		T res = array[index];
 		return res;
 	}
@@ -168,7 +171,7 @@ public class ArrayList<T> implements List<T> {
 	public int lastIndexOf(Predicate<T> predicate) {
 		int res = -1;
 		int index = size - 1;
-		while (index >=0 && res == -1) {
+		while (index >= 0 && res == -1) {
 			if (predicate.test(array[index])) {
 				res = index;
 			}
@@ -180,13 +183,20 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		int oldSize = size;
-		int nDelete = size-1;
-		while(nDelete >= 0) {
-			if (predicate.test(array[nDelete])) {
-				remove(nDelete);
-			}
-			nDelete--;
+//		int i = 0;
+//		while(i < size) {
+//			if(predicate.test(array[i])) {
+//				remove(i);
+//			} else {
+//				i++;
+//			}
+//		}
+		for(int i = size - 1; i >= 0; i--) {
+			if(predicate.test(array[i])) {
+				remove(i);
+			} 
 		}
-		return oldSize != size;
+		return oldSize > size;
 	}
+
 }
