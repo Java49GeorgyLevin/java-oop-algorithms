@@ -12,7 +12,9 @@ public class LinkedList<T> implements List<T> {
 		T obj;
 		Node<T> next;
 		Node<T> prev;
-		Node(T obj)
+		Node(T obj) {
+			this.obj = obj;
+		}
 	}
 
 	@Override
