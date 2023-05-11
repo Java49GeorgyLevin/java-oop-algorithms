@@ -37,8 +37,8 @@ public class ArrayList<T> implements List<T> {
 	public void add(int index, T obj) {
 		if(index < 0 || index > size) {
 			throw new IndexOutOfBoundsException(index);
-		} else if (size == Integer.MAX_VALUE) {
-			throw new IndexOutOfBoundsException(size);
+//		} else if (size == Integer.MAX_VALUE) {
+//			throw new IndexOutOfBoundsException(size);
 		}
 		
 		if (size == array.length) {
