@@ -177,6 +177,13 @@ void setUp() {
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
 	}
 	@Test
+	void testLastIndexOfPredicate()  {
+		assertEquals(1, list.lastIndexOf(a -> a < 0));
+		list.add(-17);
+		assertEquals(list.size() - 1, list.lastIndexOf(a -> a < 0));
+		assertEquals(-1, list.lastIndexOf(a -> a % 2 != 0 && a > 7));
+	}
+	@Test
 	void testRemoveIfAll() {
 		assertTrue(list.removeIf(a -> true));
 		assertEquals(0, list.size());
