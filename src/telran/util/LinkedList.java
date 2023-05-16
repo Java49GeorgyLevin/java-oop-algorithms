@@ -102,19 +102,26 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public void sort() {
-		//TODO
-
+		sort((Comparator<T>) Comparator.naturalOrder());
 	}
 
 	@Override
 	public void sort(Comparator<T> comp) {
-		//TODO
 		//1. call the method toArray
 		//2. By applying Arrays.sort you sort the array from #1
 		//3. Passing over all LinkedList nodes and setting references to objects (T)
 		// in the appropriate order from #2
-
-	}
+		
+		T[] array = (T[]) new Object[size];
+		array = toArray(array);
+		Arrays.sort(array, comp);
+		Node<T> current = head;
+		int index = 0;
+		while (current != null) {
+			current.obj = array[index++];
+			current = current.next;
+		}
+	}	
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {
@@ -251,7 +258,6 @@ public class LinkedList<T> implements List<T> {
 	}
 
 	private boolean isEqual(T object, T pattern) {
-
 		return pattern == null  ? object == pattern : pattern.equals(object);
 	}
 

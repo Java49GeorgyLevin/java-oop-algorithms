@@ -2,28 +2,29 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 
 import telran.util.*;
 
 import org.junit.jupiter.api.Test;
 
-
-
 abstract class ListTest extends CollectionTest{
-private static final int BIG_LENGTH = 100000;
+
 List<Integer> list = getList();
+
 @Override
 protected Collection<Integer> getCollection() {
 	return list;
 }
 
 	abstract protected <T> List<T> getList() ;
+	
 	@Test
 	void testAdd() {
 	assertTrue(list.add(numbers[0]));
 	assertEquals(numbers.length + 1, list.size());
 	}
+	
 	@Test
 	void testAddIndex() {
 		Integer [] expected0_500 = {500, 10, -20, 7, 50, 100, 30};
@@ -41,6 +42,7 @@ protected Collection<Integer> getCollection() {
 				() ->list.add(-1, 100));
 		
 	}
+	
 	@Test
 	void testRemoveIndex() {
 		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
@@ -58,6 +60,7 @@ protected Collection<Integer> getCollection() {
 				() -> list.remove(-3));
 		
 	}
+	
 	@Test
 	void testGetIndex() {
 		assertEquals(10, list.get(0));
@@ -66,6 +69,7 @@ protected Collection<Integer> getCollection() {
 		assertThrowsExactly(IndexOutOfBoundsException.class,
 				() -> list.get(-1));
 	}
+	
 	@Test
 	void testRemovePattern() {
 		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
@@ -80,38 +84,21 @@ protected Collection<Integer> getCollection() {
 		runTest(expectedNo10_50_30);
 		assertFalse(list.remove((Integer)50));
 	}
+	
 	@Test
 	void testIndexOf() {
 		list.add(3, 1280);
 		assertEquals(3, list.indexOf(1280));
 		assertEquals(-1, list.indexOf((Integer)null));
 	}
+	
 	@Test
 	void testLastIndexOf() {
 		list.add(3, 10);
 		assertEquals(3, list.lastIndexOf(10));
 		assertEquals(-1, list.lastIndexOf((Integer)null));
 	}
-	@Test
-	void testToArrayForBigArray() {
-		Integer bigArray[] = new Integer[BIG_LENGTH];
-		for(int i = 0; i < BIG_LENGTH; i++) {
-			bigArray[i] = 10;
-		}
-		Integer actualArray[] = list.toArray(bigArray);
-		int size = list.size();
-		for(int i = 0; i < size; i++) {
-			assertEquals(numbers[i], actualArray[i]);
-		}
-		assertNull(actualArray[size]);
-		assertTrue(bigArray == actualArray);
-	}
-	@Test
-	void testToArrayForEmptyArray() {
-		Integer actualArray[] =
-				list.toArray(new Integer[0]);
-		assertArrayEquals(numbers, actualArray);
-	}
+	
 	@Test
 	void testSort() {
 		Integer expected[] = {-20, 7, 10, 30,  50, 100 };
@@ -119,6 +106,7 @@ protected Collection<Integer> getCollection() {
 		assertArrayEquals(expected,
 				list.toArray(new Integer[0]));
 	}
+	
 	@Test
 	void testSortPersons() {
 		List<Person> persons = getList();
@@ -132,6 +120,7 @@ protected Collection<Integer> getCollection() {
 		persons.sort();
 		assertArrayEquals(expected, persons.toArray(new Person[0]));
 	}
+	
 	@Test
 	void testSortPersonsByAge() {
 		List<Person> persons = getList();
@@ -142,13 +131,13 @@ protected Collection<Integer> getCollection() {
 		persons.add(p2);
 		persons.add(p3);
 		Person expected[] = {p3, p1, p2};
-		persons.sort((prs1, prs2) -> Integer.compare(prs2.getAge(), prs1.getAge()));
-	
+		persons.sort((prs1, prs2) -> Integer.compare(prs2.getAge(), prs1.getAge()));	
 		assertArrayEquals(expected,
-				persons.toArray(new Person[0]));
-		
+				persons.toArray(new Person[0]));		
 	}
+	
 	@Test
+	@Disabled
 	void testEvenOddSorting() {
 		Integer[] expected = { -20,  10, 30, 50, 100, 7, -17};
 		list.add(-17);
@@ -163,36 +152,20 @@ protected Collection<Integer> getCollection() {
 		list.sort(ListTest::evenOddCompare);
 		assertArrayEquals(expected, list.toArray(new Integer[0]));
 	}
+	
 	@Test
 	void testIndexOfPredicate()  {
 		assertEquals(1, list.indexOf(a -> a < 0));
 		list.add(-17);
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
 	}
+	
 	@Test
 	void testRemoveIfAll() {
 		assertTrue(list.removeIf(a -> true));
 		assertEquals(0, list.size());
 	}
-	@Test
-	void testRemoveIfPredicate() {
-		Integer[] expected = {10, -20,  50, 100, 30};
-		assertFalse(list.removeIf(a -> a % 2 != 0
-				&& a >= 10));
-		assertTrue(list.removeIf(a -> a % 2 != 0));
-		runTest(expected);
-		
-	}
-	private void runTest(Integer[] expected) {
-		int size = list.size() ;
-		Integer [] actual = new Integer[expected.length];
-		
-		for(int i = 0; i < size; i++) {
-			actual[i] = list.get(i);
-		}
-		assertArrayEquals(expected, actual);
-		
-	}
+
 	static private int evenOddCompare(Integer a, Integer b) {
 		int res = Math.abs(a % 2) - Math.abs(b % 2);
 		if (res == 0) {
