@@ -1,3 +1,8 @@
 /ArrayList.class
 /Collection.class
 /List.class
+/LinkedList$LinkedListIterator.class
+/ArrayList$ArrayListIterator.class
+/bin
+/Range.class
+/Range$RangeIterator.class

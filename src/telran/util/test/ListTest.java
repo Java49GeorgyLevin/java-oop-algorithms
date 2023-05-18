@@ -2,28 +2,23 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 
 import telran.util.*;
 
 import org.junit.jupiter.api.Test;
 
+
+
 abstract class ListTest extends CollectionTest{
 
 List<Integer> list = getList();
-
 @Override
 protected Collection<Integer> getCollection() {
 	return list;
 }
 
 	abstract protected <T> List<T> getList() ;
-	
-	@Test
-	void testAdd() {
-	assertTrue(list.add(numbers[0]));
-	assertEquals(numbers.length + 1, list.size());
-	}
 	
 	@Test
 	void testAddIndex() {
@@ -42,7 +37,6 @@ protected Collection<Integer> getCollection() {
 				() ->list.add(-1, 100));
 		
 	}
-	
 	@Test
 	void testRemoveIndex() {
 		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
@@ -60,7 +54,6 @@ protected Collection<Integer> getCollection() {
 				() -> list.remove(-3));
 		
 	}
-	
 	@Test
 	void testGetIndex() {
 		assertEquals(10, list.get(0));
@@ -71,27 +64,11 @@ protected Collection<Integer> getCollection() {
 	}
 	
 	@Test
-	void testRemovePattern() {
-		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
-		Integer [] expectedNo10_50 = { -20, 7,  100, 30};
-		Integer [] expectedNo10_50_30 = { -20, 7,  100};
-		assertTrue(list.remove(numbers[0]));
-		runTest(expectedNo10);
-		Integer objToRemove = 50;
-		assertTrue(list.remove(objToRemove));
-		runTest(expectedNo10_50);
-		assertTrue(list.remove((Integer)30));
-		runTest(expectedNo10_50_30);
-		assertFalse(list.remove((Integer)50));
-	}
-	
-	@Test
 	void testIndexOf() {
 		list.add(3, 1280);
 		assertEquals(3, list.indexOf(1280));
 		assertEquals(-1, list.indexOf((Integer)null));
 	}
-	
 	@Test
 	void testLastIndexOf() {
 		list.add(3, 10);
@@ -106,7 +83,6 @@ protected Collection<Integer> getCollection() {
 		assertArrayEquals(expected,
 				list.toArray(new Integer[0]));
 	}
-	
 	@Test
 	void testSortPersons() {
 		List<Person> persons = getList();
@@ -120,7 +96,6 @@ protected Collection<Integer> getCollection() {
 		persons.sort();
 		assertArrayEquals(expected, persons.toArray(new Person[0]));
 	}
-	
 	@Test
 	void testSortPersonsByAge() {
 		List<Person> persons = getList();
@@ -131,13 +106,13 @@ protected Collection<Integer> getCollection() {
 		persons.add(p2);
 		persons.add(p3);
 		Person expected[] = {p3, p1, p2};
-		persons.sort((prs1, prs2) -> Integer.compare(prs2.getAge(), prs1.getAge()));	
-		assertArrayEquals(expected,
-				persons.toArray(new Person[0]));		
-	}
+		persons.sort((prs1, prs2) -> Integer.compare(prs2.getAge(), prs1.getAge()));
 	
+		assertArrayEquals(expected,
+				persons.toArray(new Person[0]));
+		
+	}
 	@Test
-	@Disabled
 	void testEvenOddSorting() {
 		Integer[] expected = { -20,  10, 30, 50, 100, 7, -17};
 		list.add(-17);
@@ -152,7 +127,6 @@ protected Collection<Integer> getCollection() {
 		list.sort(ListTest::evenOddCompare);
 		assertArrayEquals(expected, list.toArray(new Integer[0]));
 	}
-	
 	@Test
 	void testIndexOfPredicate()  {
 		assertEquals(1, list.indexOf(a -> a < 0));
@@ -160,12 +134,8 @@ protected Collection<Integer> getCollection() {
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
 	}
 	
-	@Test
-	void testRemoveIfAll() {
-		assertTrue(list.removeIf(a -> true));
-		assertEquals(0, list.size());
-	}
-
+	
+	
 	static private int evenOddCompare(Integer a, Integer b) {
 		int res = Math.abs(a % 2) - Math.abs(b % 2);
 		if (res == 0) {
