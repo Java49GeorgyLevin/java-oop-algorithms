@@ -3,24 +3,27 @@ package telran.util;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
-private class ArrayListIterator implements Iterator<T> {
+private class ArrayListIterator implements Iterator<T> {	
+	int current = 0;
 
 	@Override
 	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
+		return current < size;
 	}
 
 	@Override
 	public T next() {
-		// TODO Auto-generated method stub
-		return null;
+		if(!hasNext()) {
+			throw new NoSuchElementException(); 
+		}
+		return array[current++];
 	}
 	
 }
