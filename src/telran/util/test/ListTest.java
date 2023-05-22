@@ -2,8 +2,7 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import org.junit.jupiter.api.BeforeEach;
 
 import telran.util.*;
 
@@ -133,7 +132,16 @@ protected Collection<Integer> getCollection() {
 		assertEquals(1, list.indexOf(a -> a < 0));
 		list.add(-17);
 		assertEquals(-1, list.indexOf(a -> a % 2 != 0 && a > 7));
-	}	
+	}
+	@Test
+	void clearPerformance() {
+		List<Integer> bigList = getList();
+		for(int i = 0; i < 1_000_000; i++) {
+			bigList.add(i);
+		}
+		bigList.clear();
+	}
+	
 	
 	
 	static private int evenOddCompare(Integer a, Integer b) {
@@ -142,19 +150,6 @@ protected Collection<Integer> getCollection() {
 			res = a % 2 == 0 ? a - b : b - a;
 		}
 		return res;
-	}
-	
-	@Test
-	void iteratorTest() {
-//		{ 10, -20, 7, 50, 100, 30 };
-		Iterator<Integer> it1 = list.iterator();
-		Iterator<Integer> it2 = list.iterator();
-		it1.next();
-		assertEquals(-20, it1.next());
-		assertTrue(it2.hasNext());
-		it2.next();it2.next();it2.next();it2.next();it2.next();it2.next();
-		assertFalse(it2.hasNext());
-		assertThrows(NoSuchElementException.class, () -> it2.next());
 	}
 
 }

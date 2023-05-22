@@ -4,7 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,6 +83,51 @@ public abstract class CollectionTest {
 		Integer actualArray[] =
 				collection.toArray(new Integer[0]);
 		assertArrayEquals(numbers, actualArray);
+	}
+	@Test
+	void testIterator() {
+		
+		Iterator<Integer> it1 = collection.iterator();
+		Iterator<Integer> it2 = collection.iterator();
+		it1.next();
+		while(it2.hasNext()) {
+			it2.next();
+		}
+		assertEquals(numbers[1],it1.next());
+		
+		assertThrowsExactly(NoSuchElementException.class, () -> it2.next());
+	}
+	@Test
+	void testIteratorRemove() {
+		Iterator<Integer> it = collection.iterator();
+		Integer[] expectedFirst = { -20, 7, 50, 100, 30 };
+		Integer[] expectedLast = { -20, 7, 50, 100};
+		
+		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
+		it.next();
+		it.remove();
+		runTest(expectedFirst);
+		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
+		while(it.hasNext()) {
+			it.next();
+		}
+		it.remove();
+		runTest(expectedLast);
+		
+		
+		
+	}
+	@Test
+	void testContains() {
+		assertTrue(collection.contains(numbers[0]));
+		assertTrue(collection.contains(numbers[3]));
+		assertTrue(collection.contains(numbers[numbers.length - 1]));
+		assertFalse(collection.contains(1000000));
+	}
+	@Test
+	void clearFunctionalTest() {
+		collection.clear();
+		assertEquals(0, collection.size());
 	}
 	protected void runTest(Integer[] expected) {
 		Integer [] actual = collection.toArray(new Integer[0]);

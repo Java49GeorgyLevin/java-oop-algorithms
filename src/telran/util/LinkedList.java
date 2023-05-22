@@ -11,22 +11,34 @@ public class LinkedList<T> implements List<T> {
 	Node<T> tail;
 	int size;
 private class LinkedListIterator implements Iterator<T> {
-	Node<T> current = head;
-
+Node<T> current = head;
+boolean flNext = false;
 	@Override
 	public boolean hasNext() {
+		
 		return current != null;
 	}
 
 	@Override
 	public T next() {
-		if(!hasNext()) {
+		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		T currentValue = current.obj;
+		T res = current.obj;
 		current = current.next;
-		return currentValue;
+		flNext = true;
+		return res;
 	}
+	@Override
+	public void remove() {
+		if (!flNext) {
+			throw new IllegalStateException();
+		}
+		Node<T> removedNode = current != null ? current.prev : tail;
+		removeNode(removedNode);
+		flNext = false;
+	}
+	
 	
 }
 	private static class Node<T> {
@@ -49,7 +61,9 @@ private class LinkedListIterator implements Iterator<T> {
 	public int size() {
 
 		return size;
-	}	
+	}
+
+	
 
 	
 	@Override
@@ -59,6 +73,7 @@ private class LinkedListIterator implements Iterator<T> {
 		}
 		Node<T> node = new Node<>(obj);
 		addNode(index, node);
+
 	}
 
 	@Override
@@ -132,21 +147,7 @@ private class LinkedListIterator implements Iterator<T> {
 		return current == null ? -1 : index;
 	}
 
-	@Override
-	public boolean removeIf(Predicate<T> predicate) {
-		Node<T> current = head;
-		Node<T> next = null;
-		int oldSize = size;
-		while (current != null) {
-			next = current.next;
-			if (predicate.test(current.obj)) {
-				removeNode(current);
-			}
-			current = next;
-
-		}
-		return oldSize > size;
-	}
+	
 
 	private void addNode(int index, Node<T> node) {
 		if (head == null) {
@@ -248,5 +249,9 @@ private class LinkedListIterator implements Iterator<T> {
 	public Iterator<T> iterator() {
 		return new LinkedListIterator();
 	}
+
+	
+
+	
 
 }

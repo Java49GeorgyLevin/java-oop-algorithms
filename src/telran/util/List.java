@@ -1,5 +1,6 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Predicate;
 
@@ -33,9 +34,9 @@ default boolean contains(T pattern) {
 default int indexOf(T pattern) {
 	return indexOf(obj -> isEqual(obj, pattern));
 }
-
 default int lastIndexOf(T pattern) {
 	return lastIndexOf(obj -> isEqual(obj, pattern));
-	}
+}
+
 
 }
