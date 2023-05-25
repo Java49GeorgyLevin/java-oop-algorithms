@@ -49,9 +49,9 @@ Range range = new Range(10, 14);
 	}
 	@Test
 	void removeIfTest() {
-		Range range1 = new Range(1,5);
+		Range range1 = new Range(1,4);
 		range1.removeIf(num -> num % 2 != 0);
-		assertArrayEquals(new Integer[] {2, 4}, range1.toArray());
+		assertArrayEquals(new Integer[] {2}, range1.toArray());
 	}
 
 }

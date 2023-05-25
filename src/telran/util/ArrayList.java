@@ -60,18 +60,17 @@ boolean flNext = false;
 	public boolean removeIf(Predicate<T> predicate) {
 		//TODO rewrite the removeIf method of ArrayList for optimization (O[N])
 		int oldSize = size;
-		int indDest = 0;	
-		for(int indSource = 0; indSource < oldSize; indSource++) {
-			if(predicate.test(array[indSource])) {
+		int indexDest = 0;
+		for(int indexSrc = 0; indexSrc < oldSize; indexSrc++) {
+			if (predicate.test(array[indexSrc])) {
 				size--;
 			} else {
-				array[indDest++] = array[indSource];
+				array[indexDest++] = array[indexSrc];
 			}
 		}
-		for(int i = size; i < oldSize; i++) {
+		for (int i = size; i < oldSize; i++) {
 			array[i] = null;
 		}
-		
 		return oldSize > size;
 	}
 

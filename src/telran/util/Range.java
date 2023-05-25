@@ -19,22 +19,10 @@ public class Range implements Iterable<Integer> {
 		Integer current = getCurrent(min - 1);
 		Integer prev = null;
 		boolean flNext = false;
-		
 		@Override
-		public boolean hasNext() {			
+		public boolean hasNext() {
+			
 			return current != null;
-		}
-
-		private Integer getCurrent(Integer current) {
-			Integer res = null;
-			current++;
-			while(current < max && res == null) {
-				if(!removedList.contains(current)) {
-					res = current;
-				}
-				current++;				
-			}
-			return res;
 		}
 
 		@Override
@@ -42,12 +30,24 @@ public class Range implements Iterable<Integer> {
 			if(current == null) {
 				throw new NoSuchElementException();
 			}
-			int numCurrent = current;
+			int currentNum = current;
 			prev = current;
 			current = getCurrent(current);
-			flNext = true;			
-			return numCurrent;
+			flNext = true;
+			return currentNum;
 		}
+		private Integer getCurrent(Integer current) {
+			Integer res = null;
+			current++;
+			while(current < max && res == null) {
+				if(!removedList.contains(current)) {
+					res = current;
+				}
+				current++;
+			}
+			return res;
+		}
+
 		@Override
 		public void remove() {
 			if(!flNext) {
@@ -55,14 +55,15 @@ public class Range implements Iterable<Integer> {
 			}
 			removedList.add(prev);
 			flNext = false;
+			
 		}
 		
 	}
 	@Override
-	public Iterator<Integer> iterator() {		
+	public Iterator<Integer> iterator() {
+		
 		return new RangeIterator();
 	}
-	
 	public Integer[] toArray() {
 		Integer [] array = new Integer[getSize()];
 		int index = 0;
@@ -79,19 +80,19 @@ public class Range implements Iterable<Integer> {
 		return array;
 	}
 	public boolean removeIf(Predicate<Integer> predicate) {
-		int oldSize = getSize();		
+		int oldSize = getSize() ;
 		Iterator<Integer> it = iterator();
-		while (it.hasNext()) {
-			int num = it.next();
-			if(predicate.test(num)) {
+		while(it.hasNext()) {
+			int number = it.next();
+			if (predicate.test(number)) {
 				it.remove();
-			}	
+			}
 		}
 		return oldSize > getSize();
 	}
-	
 	private int getSize() {
 		return max - min - removedList.size();
 	}
+	
 
 }

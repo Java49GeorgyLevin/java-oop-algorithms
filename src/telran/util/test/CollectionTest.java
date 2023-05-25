@@ -20,7 +20,7 @@ public abstract class CollectionTest {
 //	to here
 	protected Integer[] numbers = { 10, -20, 7, 50, 100, 30 };
 	protected Collection<Integer> collection;
-	private static final int BIG_LENGTH = 100000;
+	protected static final int BIG_LENGTH = 100000;
 	@BeforeEach
 	void setUp() {
 		collection = getCollection();
