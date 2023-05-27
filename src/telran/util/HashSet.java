@@ -2,27 +2,69 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import telran.util.LinkedList.Node;
 
 public class HashSet<T> implements Set<T> {
+	
 	private static final int DEFAULT_HASH_TABLE_SIZE = 16;
 	private LinkedList<T>[] hashTable;
 	private int size;
 	private class HashSetIterator implements Iterator<T> {
-
+		boolean flNext = false;
+		
+		int currentIndex = getCurrentIndex(-1);
+		LinkedList<T> currentHashTable = hashTable[currentIndex];		
+		Node<T> currentObj = currentHashTable.head;
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
-			return false;
+			return currentIndex < hashTable.length;
+		}
+
+		private int getCurrentIndex(int i) {
+			i++;
+			int index = -1;
+			while(index == -1 && i < hashTable.length) {
+				if(hashTable[i] != null) {
+					index = i;
+				}
+				i++;				
+			}
+			if(index == -1) {
+				index = hashTable.length + 1;
+			}
+			return index;
 		}
 
 		@Override
 		public T next() {
-			// TODO Auto-generated method stub
-			return null;
+			T resCurrent = currentObj.obj;
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			if(currentObj != currentHashTable.tail) {
+				currentObj = currentObj.next;				
+			} else { currentIndex = getCurrentIndex(currentIndex);
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}				
+				currentHashTable = hashTable[currentIndex];
+				currentObj = currentHashTable.head;
+				
+			}
+			flNext = true;
+			return resCurrent;
 		}
 		@Override
 		public void remove() {
 			//TODO
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			Node<T> deleteObj = currentObj;
+			HashSet.this.remove(deleteObj.obj);
+			flNext = false;
 		}
 		
 	}
