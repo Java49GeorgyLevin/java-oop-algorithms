@@ -41,7 +41,7 @@ boolean flNext = false;
 	
 	
 }
-	public static class Node<T> {
+	private static class Node<T> {
 		T obj;
 		Node<T> next;
 		Node<T> prev;

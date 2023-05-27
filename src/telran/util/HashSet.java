@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import telran.util.LinkedList.Node;
 
 public class HashSet<T> implements Set<T> {
 	
@@ -12,11 +11,13 @@ public class HashSet<T> implements Set<T> {
 	private LinkedList<T>[] hashTable;
 	private int size;
 	private class HashSetIterator implements Iterator<T> {
+		Iterator<T> itList;
 		boolean flNext = false;
 		
 		int currentIndex = getCurrentIndex(-1);
 		LinkedList<T> currentHashTable = hashTable[currentIndex];		
-		Node<T> currentObj = currentHashTable.head;
+		Object currentObj = currentHashTable.head;
+		
 		@Override
 		public boolean hasNext() {
 			return currentIndex < hashTable.length;
@@ -38,20 +39,16 @@ public class HashSet<T> implements Set<T> {
 		}
 
 		@Override
-		public T next() {
-			T resCurrent = currentObj.obj;
+		public T next() {			
 			if(!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			T resCurrent = itList.next();
 			if(currentObj != currentHashTable.tail) {
-				currentObj = currentObj.next;				
+				currentObj = itList.next();				
 			} else { currentIndex = getCurrentIndex(currentIndex);
-				if(!hasNext()) {
-					throw new NoSuchElementException();
-				}				
 				currentHashTable = hashTable[currentIndex];
-				currentObj = currentHashTable.head;
-				
+				currentObj = currentHashTable.head;	
 			}
 			flNext = true;
 			return resCurrent;
@@ -62,8 +59,8 @@ public class HashSet<T> implements Set<T> {
 			if (!flNext) {
 				throw new IllegalStateException();
 			}
-			Node<T> deleteObj = currentObj;
-			HashSet.this.remove(deleteObj.obj);
+			itList.remove();
+//			HashSet.this.remove(deleteObj.obj);
 			flNext = false;
 		}
 		
@@ -76,10 +73,19 @@ public class HashSet<T> implements Set<T> {
 		this(DEFAULT_HASH_TABLE_SIZE);
 	}
 	@Override
-	public Iterator<T> iterator() {
-		
+	public Iterator<T> iterator() {		
 		return new HashSetIterator();
 	}
+	
+//	private static class Node<T> {
+//		T obj;
+//		Node<T> next;
+//		Node<T> prev;
+//
+//		Node(T obj) {
+//			this.obj = obj;
+//		}
+//	}
 
 	@Override
 	public boolean add(T obj) {
