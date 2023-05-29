@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.util.Collection;
+import telran.util.List;
 
 public abstract class CollectionTest {
 //TODO move tests of interface collection methods (5 methods) from ListTest
@@ -93,26 +94,29 @@ public abstract class CollectionTest {
 		while(it2.hasNext()) {
 			it2.next();
 		}
-		assertEquals(numbers[1],it1.next());
+		assertTrue(collection.contains(it1.next()));
 		
 		assertThrowsExactly(NoSuchElementException.class, () -> it2.next());
 	}
 	@Test
 	void testIteratorRemove() {
 		Iterator<Integer> it = collection.iterator();
-		Integer[] expectedFirst = { -20, 7, 50, 100, 30 };
-		Integer[] expectedLast = { -20, 7, 50, 100};
+		
 		
 		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
-		it.next();
+		Integer removed = it.next();
+		assertTrue(collection.contains(removed));
 		it.remove();
-		runTest(expectedFirst);
+		assertFalse(collection.contains(removed));
 		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
 		while(it.hasNext()) {
-			it.next();
+			removed = it.next();
+			
 		}
+		assertTrue(collection.contains(removed));
 		it.remove();
-		runTest(expectedLast);
+		assertFalse(collection.contains(removed));
+		
 		
 		
 		
@@ -128,6 +132,15 @@ public abstract class CollectionTest {
 	void clearFunctionalTest() {
 		collection.clear();
 		assertEquals(0, collection.size());
+	}
+	@Test
+	void clearPerformance() {
+		Collection<Integer> bigCollection = getCollection();
+		for(int i = 0; i < 1_000_000; i++) {
+			bigCollection.add(i);
+		}
+		bigCollection.clear();
+		assertEquals(0, bigCollection.size());
 	}
 	protected void runTest(Integer[] expected) {
 		Integer [] actual = collection.toArray(new Integer[0]);
