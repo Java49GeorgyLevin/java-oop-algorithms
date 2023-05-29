@@ -1,74 +1,73 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
 public class HashSet<T> implements Set<T> {
-	
 	private static final int DEFAULT_HASH_TABLE_SIZE = 16;
 	private LinkedList<T>[] hashTable;
 	private int size;
 	private class HashSetIterator implements Iterator<T> {
-		Iterator<T> currentItList;
-		Iterator<T> prevItList;
-		int currentItIndex;
+		Integer currentIteratorIndex;
+		Iterator<T> currentIterator;
+		Iterator<T> prevIterator;
 		boolean flNext = false;
-		
-		public HashSetIterator() {
+		HashSetIterator() {
 			initialState();
 		}
-		
 		private void initialState() {
-			currentItIndex = getCurrentIndex(-1);
-			if(currentItIndex >= 0) {
-				currentItList = hashTable[currentItIndex].iterator();	
-			}			
+			currentIteratorIndex = getCurrentIteratorIndex(-1);
+			if(currentIteratorIndex > -1) {
+				currentIterator = hashTable[currentIteratorIndex].iterator();
+				
+				
+			}
+			
+			
 		}
-		
-		@Override
-		public boolean hasNext() {
-			return currentItIndex >= 0;
-		}
-
-		private int getCurrentIndex(int currentIndex) {
+		private int getCurrentIteratorIndex(int currentIndex) {
 			currentIndex++;
 			while(currentIndex < hashTable.length && 
-					(hashTable[currentIndex] == null ||
-					hashTable[currentIndex].size() == 0)
-					) {
-				currentIndex++;				
+					(hashTable[currentIndex] == null || hashTable[currentIndex].size() == 0)) {
+				currentIndex++;
 			}
 			return currentIndex < hashTable.length ? currentIndex : -1;
 		}
+		@Override
+		public boolean hasNext() {
+			
+			return currentIteratorIndex >= 0;
+		}
 
 		@Override
-		public T next() {			
+		public T next() {
 			if(!hasNext()) {
 				throw new NoSuchElementException();
 			}
-			T resCurrent = currentItList.next();
-			prevItList = currentItList;
-			updateItList();
+			T res = currentIterator.next();
+			prevIterator = currentIterator;
+			updateState();
 			flNext = true;
-			return resCurrent;
+			return res;
 		}
-		
-		private void updateItList() {
-			if(!currentItList.hasNext()) {
-				currentItIndex = getCurrentIndex(currentItIndex);
-				if(currentItIndex >= 0) {
-				currentItList = hashTable[currentItIndex].iterator();		
+		private void updateState() {
+			if(!currentIterator.hasNext()) {
+				currentIteratorIndex =
+						getCurrentIteratorIndex(currentIteratorIndex);
+				if(currentIteratorIndex >= 0) {
+					currentIterator = hashTable[currentIteratorIndex].iterator();
 				}
 			}
+			
+			
 		}
-
 		@Override
 		public void remove() {
-			if (!flNext) {
+			if(!flNext) {
 				throw new IllegalStateException();
 			}
-			prevItList.remove();
+			prevIterator.remove();
 			size--;
 			flNext = false;
 		}
@@ -82,7 +81,8 @@ public class HashSet<T> implements Set<T> {
 		this(DEFAULT_HASH_TABLE_SIZE);
 	}
 	@Override
-	public Iterator<T> iterator() {		
+	public Iterator<T> iterator() {
+		
 		return new HashSetIterator();
 	}
 
@@ -145,5 +145,6 @@ public class HashSet<T> implements Set<T> {
 		int index = getHashTableIndex(pattern);
 		return hashTable[index] != null && hashTable[index].contains(pattern);
 	}
+	
 
 }
