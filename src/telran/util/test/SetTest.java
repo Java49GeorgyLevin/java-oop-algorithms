@@ -58,5 +58,14 @@ public abstract class SetTest extends CollectionTest {
 		Arrays.sort(expected);
 		assertArrayEquals(expected, actualArray);
 	}
+	@Test
+	void clearPerformance() {
+		Collection<Integer> bigCollection = getCollection();
+		for(int i = 0; i < 1_000_0; i++) {
+			bigCollection.add(i);
+		}
+		bigCollection.clear();
+		assertEquals(0, bigCollection.size());
+	}
 
 }

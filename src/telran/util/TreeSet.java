@@ -10,30 +10,44 @@ public class TreeSet<T> implements Set<T> {
 		Node<T> parent;
 		Node<T> left;
 		Node<T> right;
+
 		Node(T obj) {
 			this.obj = obj;
 		}
-		
+
 	}
+
 	private Node<T> root;
 	private Comparator<T> comp;
 	private int size;
+
+	public TreeSet(Comparator<T> comp) {
+		this.comp = comp;
+	}
+
+	@SuppressWarnings("unchecked")
+	public TreeSet() {
+		this((Comparator<T>) Comparator.naturalOrder());
+	}
+
 	private class TreeSetIterator implements Iterator<T> {
 		Node<T> current;
 		Node<T> prev;
 		boolean flNext = false;
+
 		TreeSetIterator() {
 			current = root == null ? null : getLeast(root);
 		}
+
 		@Override
 		public boolean hasNext() {
-			
+
 			return current != null;
 		}
 
 		@Override
 		public T next() {
-			if(!hasNext()) {
+			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
 			T res = current.obj;
@@ -42,16 +56,17 @@ public class TreeSet<T> implements Set<T> {
 			flNext = true;
 			return res;
 		}
+
 		@Override
 		public void remove() {
-			if(!flNext) {
+			if (!flNext) {
 				throw new IllegalStateException();
 			}
 			removeNode(prev);
 			flNext = false;
 		}
 	}
-	
+
 	@Override
 	public boolean add(T obj) {
 		Node<T> node = new Node<>(obj);
@@ -64,7 +79,7 @@ public class TreeSet<T> implements Set<T> {
 			if (parent != null) {
 				res = true;
 				node.parent = parent;
-				if(comp.compare(obj, parent.obj) > 0) {
+				if (comp.compare(obj, parent.obj) > 0) {
 					parent.right = node;
 				} else {
 					parent.left = node;
@@ -76,34 +91,38 @@ public class TreeSet<T> implements Set<T> {
 		}
 		return res;
 	}
+
 	private Node<T> getCurrent(Node<T> current) {
-		
-		return current.right != null ? getLeast(current.right) :
-			getGreaterParent(current);
+
+		return current.right != null ? getLeast(current.right) : getGreaterParent(current);
 	}
+
 	private Node<T> getGreaterParent(Node<T> current) {
-		while(current.parent != null && current == current.parent.right) {
+		while (current.parent != null && current == current.parent.right) {
 			current = current.parent;
 		}
 		return current.parent;
 	}
+
 	private Node<T> getLeast(Node<T> node) {
 		Node<T> current = node;
-		while(current.left != null) {
+		while (current.left != null) {
 			current = current.left;
 		}
 		return current;
 	}
+
 	private Node<T> getNodeParent(T obj) {
 		Node<T> current = root;
 		Node<T> parent = null;
 		int compRes;
-		while(current != null && (compRes = comp.compare(obj, current.obj)) != 0) {
+		while (current != null && (compRes = comp.compare(obj, current.obj)) != 0) {
 			parent = current;
 			current = compRes > 0 ? current.right : current.left;
 		}
 		return current == null ? parent : current;
 	}
+
 	private Node<T> getNode(T obj) {
 		Node<T> node = getNodeParent(obj);
 		Node<T> res = null;
@@ -111,8 +130,9 @@ public class TreeSet<T> implements Set<T> {
 			res = node;
 		}
 		return res;
-		
+
 	}
+
 	private Node<T> getParent(T obj) {
 		Node<T> node = getNodeParent(obj);
 		Node<T> res = null;
@@ -124,7 +144,7 @@ public class TreeSet<T> implements Set<T> {
 
 	@Override
 	public int size() {
-		
+
 		return size;
 	}
 
@@ -134,25 +154,79 @@ public class TreeSet<T> implements Set<T> {
 		Node<T> node = getNode(pattern);
 		if (node != null) {
 			removeNode(node);
+			res = true;
 		}
-		
+
 		return res;
 	}
 
 	private void removeNode(Node<T> node) {
-		// TODO Auto-generated method stub
+		Node<T> delParent = node.parent;
+		Node<T> delLeft = node.left;
+		Node<T> delRight = node.right;
+
+		if (delLeft == null && delRight == null) {
+			if (delParent == null) {
+				node = null;
+			} else if (node == delParent.left) {
+				delParent.left = null;
+			} else if (node == delParent.right) {
+				delParent.right = null;
+			}
+
+		} else if (delLeft != null && delRight == null) {
+			if (delParent == null) {
+				root = delLeft;
+			} else if (node == delParent.left) {
+				delParent.left = delLeft;
+
+			} else if (node == delParent.right) {
+				delParent.right = delLeft;
+			}
+
+			delLeft.parent = delParent;
+
+		} else if (delLeft == null && delRight != null) {
+			if (delParent == null) {
+				root = delRight;
+			} else if (node == delParent.left) {
+				delParent.left = delRight;
+
+			} else if (node == delParent.right) {
+				delParent.right = delRight;
+			}
+
+			delRight.parent = delParent;
+
+		} else {
+			if (node == root) {
+				root = delRight;
+			} else if (node == delParent.left) {
+				delParent.left = delRight;
+			} else if (node == delParent.right) {
+				delParent.right = delRight;
+			}
+
+			delRight.parent = delParent;
+			Node<T> least = getLeast(node.right);
+			least.left = delLeft;
+			delLeft.parent = least;
+
+		}
+
 		size--;
-		
+
 	}
+
 	@Override
 	public boolean contains(T pattern) {
-		
+
 		return getNode(pattern) != null;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		
+
 		return new TreeSetIterator();
 	}
 
