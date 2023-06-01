@@ -14,6 +14,12 @@ public class TreeSet<T> implements Set<T> {
 		Node(T obj) {
 			this.obj = obj;
 		}
+		
+		void nullNode() {
+			obj = null;
+			left = null;
+			right = null;
+		}
 
 	}
 
@@ -161,61 +167,58 @@ public class TreeSet<T> implements Set<T> {
 	}
 
 	private void removeNode(Node<T> node) {
-		Node<T> delParent = node.parent;
 		Node<T> delLeft = node.left;
 		Node<T> delRight = node.right;
-
-		if (delLeft == null && delRight == null) {
-			if (delParent == null) {
-				node = null;
-			} else if (node == delParent.left) {
-				delParent.left = null;
-			} else if (node == delParent.right) {
-				delParent.right = null;
-			}
-
-		} else if (delLeft != null && delRight == null) {
-			if (delParent == null) {
-				root = delLeft;
-			} else if (node == delParent.left) {
-				delParent.left = delLeft;
-
-			} else if (node == delParent.right) {
-				delParent.right = delLeft;
-			}
-
-			delLeft.parent = delParent;
-
-		} else if (delLeft == null && delRight != null) {
-			if (delParent == null) {
-				root = delRight;
-			} else if (node == delParent.left) {
-				delParent.left = delRight;
-
-			} else if (node == delParent.right) {
-				delParent.right = delRight;
-			}
-
-			delRight.parent = delParent;
-
+		
+		if(delLeft !=null && delRight != null) {
+			removeJunction(node);
 		} else {
-			if (node == root) {
-				root = delRight;
-			} else if (node == delParent.left) {
-				delParent.left = delRight;
-			} else if (node == delParent.right) {
-				delParent.right = delRight;
-			}
-
-			delRight.parent = delParent;
-			Node<T> least = getLeast(node.right);
-			least.left = delLeft;
-			delLeft.parent = least;
-
-		}
+			removeNonJunction(node);
+		}		 
 
 		size--;
 
+	}
+	
+	private void removeNonJunction(Node<T> node) {
+		Node<T> delParent = node.parent;
+		Node<T> delLeft = node.left;
+		Node<T> delRight = node.right;
+		Node<T> child = delLeft == null ? delRight : delLeft;
+		
+		if(delParent == null) {
+			root = child;
+			
+		} else {
+				
+			if(node == delParent.left) {
+				delParent.left = child;
+			
+			} else {
+				delParent.right = child;
+			} 
+		}
+		
+		if (child != null){
+			child.parent = delParent;
+		}
+		
+		node.nullNode();		
+	}
+	
+	private void removeJunction(Node<T> node) {
+		Node<T> mostFromLeast = mostFromLeast(node.left);
+		node.obj = mostFromLeast.obj;					
+		removeNonJunction(mostFromLeast);
+		
+	} 
+
+	private Node<T> mostFromLeast(Node<T> node) {
+		Node<T> most = node;
+		while(most.right != null) {
+			most = most.right;
+		}
+		return most;
 	}
 
 	@Override
