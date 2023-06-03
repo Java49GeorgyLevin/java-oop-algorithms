@@ -99,6 +99,12 @@ public class TreeSet<T> implements SortedSet<T> {
 		}
 		return current.parent;
 	}
+	private Node<T> getLeasterParent(Node<T> current) {
+		while(current.parent != null && current == current.parent.left) {
+			current = current.parent;
+		}
+		return current.parent;
+	}
 	private Node<T> getLeast(Node<T> node) {
 		Node<T> current = node;
 		while(current.left != null) {
@@ -206,23 +212,79 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T first() {
-		// TODO Auto-generated method stub
-		return null;
+		if(root == null) {
+			throw new NoSuchElementException();
+		}
+		Node<T> firstNode = root;
+		while(firstNode.left != null) {
+			firstNode = firstNode.left;
+		}
+
+		return firstNode.obj;
 	}
 	@Override
 	public T last() {
-		// TODO Auto-generated method stub
-		return null;
+		if(root == null) {
+			throw new NoSuchElementException();
+		}
+		Node<T> lastNode = root;		
+		while(lastNode.right != null) {
+			lastNode = lastNode.right;
+		}
+		
+		return lastNode.obj;
 	}
 	@Override
 	public T ceiling(T key) {
-		// TODO Auto-generated method stub
-		return null;
+		if(key == null) {
+			throw new NullPointerException();
+		}
+		T lastObj = last();
+		try {
+			comp.compare(key, lastObj);
+			}
+		catch(Exception e) {
+			throw new ClassCastException();
+		}		
+		T res = null;		
+		if(comp.compare(key, lastObj) < 0) {
+			
+			Node<T> parent = getNodeParent(key);
+			if (comp.compare(parent.obj, key) > 0) {				
+				res = parent.obj;
+			} else if (comp.compare(parent.obj, key) == 0 && parent.right != null) {
+					res = parent.right.obj;
+			} else {
+				res = getGreaterParent(parent).obj;
+				}
+			}
+		return res;
 	}
 	@Override
 	public T floor(T key) {
-		// TODO Auto-generated method stub
-		return null;
+		if(key == null) {
+			throw new NullPointerException();
+		}
+		T firstObj = first();
+		try {
+			comp.compare(key, firstObj);
+			}
+		catch(Exception e) {
+			throw new ClassCastException();
+		}		
+		T res = null;		
+		if(comp.compare(key, firstObj) > 0) {
+			
+			Node<T> parent = getNodeParent(key);
+			if (comp.compare(parent.obj, key) < 0) {				
+				res = parent.obj;
+			} else if (comp.compare(parent.obj, key) == 0 && parent.left != null) {
+					res = parent.left.obj;
+			} else {
+				res = getLeasterParent(parent).obj;
+				}
+			}
+		return res;
 	}
 
 }

@@ -1,6 +1,7 @@
 package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,12 +28,23 @@ public abstract class SortedSetTest extends SetTest {
 	@Test
 	void ceilingTest() {
 		SortedSet<Integer> sortedSet = (SortedSet<Integer>)set;
-		//TODO test for the method ceiling
+		assertEquals(-20, sortedSet.ceiling(-40));
+		assertEquals(50, sortedSet.ceiling(40));
+		assertEquals(100, sortedSet.ceiling(50));
+		assertEquals(100, sortedSet.ceiling(60));
+		assertEquals(null, sortedSet.ceiling(100));
+		assertThrowsExactly(NullPointerException.class, () -> sortedSet.ceiling(null));
+
 	}
 	@Test
 	void floorTest() {
 		SortedSet<Integer> sortedSet = (SortedSet<Integer>)set;
-		//TODO test for the method floor
+		assertEquals(10, sortedSet.floor(20));
+		assertEquals(30, sortedSet.floor(40));
+		assertEquals(10, sortedSet.floor(30));
+		assertEquals(100, sortedSet.floor(120));
+		assertEquals(null, sortedSet.floor(-40));
+		assertThrowsExactly(NullPointerException.class, () -> sortedSet.floor(null));
 	}
 
 }
