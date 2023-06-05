@@ -32,6 +32,8 @@ class LineRecursionTest {
 	}
 	@Test
 	void powTest () {
+		assertEquals(1, LineRecursion.pow(0, 0));
+		assertEquals(0, LineRecursion.pow(0, 1));
 		assertEquals(100, LineRecursion.pow(10, 2));
 		assertEquals(100, LineRecursion.pow(-10, 2));
 		assertEquals(1000, LineRecursion.pow(10, 3));

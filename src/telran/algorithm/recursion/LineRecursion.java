@@ -26,10 +26,31 @@ public class LineRecursion {
 		//Limitations:
 		// 1. no cycles
 		// 2. only + or - for arithmetic operations
-		
-		return 0;
-		
+		long res = 1;
+		int sign = (a - Math.abs(a) < 0)  && (b % 2 != 0) ? -1 : 1;
+		if(b == 1) {
+			res = a;
+		} else if (b > 1) {
+			a = Math.abs(a);
+			res = a;
+			int degree = b;			
+			while (degree > 1) {
+				res = likeMultiplication((int)res, a);
+				--degree;
+				}		
+			}				
+		return res * sign;		
 	}
+	
+	public static long likeMultiplication(int a, int count) {
+		int res = 0;
+		while(count > 0) {
+			res += a;
+			--count;
+		}
+		return res;
+	}
+	
 	public static long sum(int[] array) {
 		return sum(0, array);
 	}
