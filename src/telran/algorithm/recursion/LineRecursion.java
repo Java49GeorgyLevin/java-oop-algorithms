@@ -14,9 +14,9 @@ public class LineRecursion {
 	public static long pow(int a, int b) {
 		//a - any number
 		//b - any positive number or zero
-//		if (b < 0) {
-//				throw new IllegalArgumentException("Pow cannot be negative value");
-//		}
+		if (b < 0) {
+				throw new IllegalArgumentException("Pow cannot be negative value");
+		}
 //		long res = 1;
 //		if (b > 0) {
 //			res = a * pow(a, b - 1); // a^b = a * a^(b - 1)
@@ -32,22 +32,69 @@ public class LineRecursion {
 			res = a;
 		} else if (b > 1) {
 			a = Math.abs(a);
-			res = a;
-			int degree = b;			
-			while (degree > 1) {
-				res = likeMultiplication((int)res, a);
-				--degree;
-				}		
+				res = likeMultiplication(a, b, a);
 			}				
 		return res * sign;		
 	}
 	
-	public static long likeMultiplication(int a, int count) {
-		int res = 0;
-		while(count > 0) {
-			res += a;
-			--count;
+	private static long likeMultiplication(int a, int b, int count) {
+		long res = a;
+		if(b > 1) {			
+			while(count > 1) {
+				res += a;
+				--count;
+			}
+			res = likeMultiplication((int)res, b-1, a);
 		}
+		return res;
+	}
+	
+	public static long square(int x) {
+//		x = Math.abs(x);
+//		int res = x;
+//			if(x > 0) {
+//				int count = x;
+//				while(count > 1) {
+//					res += x;
+//					count--;
+//				}
+//				
+//			}
+		return pow(x, 2);
+	}
+	
+	public static boolean isSubstring(String string, String substr) {
+		
+//		chrAt(int ind);
+//		substring(int ind);
+//		length();
+		if(substr.length() == 0 || string.length() == 0) {
+			throw new IllegalArgumentException("Both string and substring must be not empty");
+		} else if(substr.length() > string.length()) {
+			throw new IllegalArgumentException("Subst cannot be longest than string");
+		}
+		
+		boolean res = false;
+		int subL = substr.length();
+		int strL = string.length();
+		
+		for(int i = 0; i < strL; i++) {
+			if(string.charAt(i) == substr.charAt(0)) {
+				res = true;
+				int j = 0;
+				while(j < subL && res == true) {
+					if(string.charAt(i + j) == substr.charAt(j)) {
+						res = true;
+						j++;
+					} else {
+						res = false;
+					}
+				}
+//				for(int j = 0; j < subL; j++) {	}
+			}
+//			string.substring(i);
+		}		
+		
 		return res;
 	}
 	
