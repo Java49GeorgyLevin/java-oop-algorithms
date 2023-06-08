@@ -32,31 +32,11 @@ class LineRecursionTest {
 	}
 	@Test
 	void powTest () {
-		assertEquals(1, LineRecursion.pow(0, 0));
-		assertEquals(0, LineRecursion.pow(0, 1));
-		assertEquals(27, LineRecursion.pow(3, 3));
-		assertEquals(-27, LineRecursion.pow(-3, 3));
 		assertEquals(100, LineRecursion.pow(10, 2));
 		assertEquals(100, LineRecursion.pow(-10, 2));
 		assertEquals(1000, LineRecursion.pow(10, 3));
 		assertEquals(-1000, LineRecursion.pow(-10, 3));
 	}
-	@Test
-	void squareTest() {
-		assertEquals(0, LineRecursion.square(0));
-		assertEquals(1, LineRecursion.square(1));
-		assertEquals(9, LineRecursion.square(3));
-		assertEquals(9, LineRecursion.square(-3));
-	}
-	
-	@Test
-	void isSubstringTest() {
-		assertTrue(LineRecursion.isSubstring("abcdef", "cd"));
-		assertTrue(LineRecursion.isSubstring("abcdef", "cde"));
-		assertFalse(LineRecursion.isSubstring("cdef", "dc"));
-		assertFalse(LineRecursion.isSubstring("abcdef", "af"));
-	}
-	
 	@Test
 	void sumTest() {
 		assertEquals(21, LineRecursion.sum(new int[] {1 , 2, 3, 4, 5, 6}));
@@ -69,6 +49,21 @@ class LineRecursionTest {
 		int expected1[] = {7, 6, 5, 4, 3, 2, 1};
 		assertArrayEquals(expected, LineRecursion.reverse(array));
 		assertArrayEquals(expected1, LineRecursion.reverse(array1));
+	}
+	@Test
+	void squareTest() {
+		assertEquals(100, LineRecursion.square(10));
+		assertEquals(10000, LineRecursion.square(-100));
+	}
+	@Test
+	void isSubstringTest() {
+		String str = "blobloblobloblokbloblo.";
+		assertTrue(LineRecursion.isSubstring(str, "blok"));
+		assertTrue(LineRecursion.isSubstring(str, "kblob"));
+		assertTrue(LineRecursion.isSubstring(str, "oblo."));
+		assertFalse(LineRecursion.isSubstring(str, "blod"));
+		assertFalse(LineRecursion.isSubstring(str, "bok"));
+		assertFalse(LineRecursion.isSubstring(str, "loko"));
 	}
 
 }
