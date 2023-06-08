@@ -53,7 +53,8 @@ class LineRecursionTest {
 	void isSubstringTest() {
 		assertTrue(LineRecursion.isSubstring("abcdef", "cd"));
 		assertTrue(LineRecursion.isSubstring("abcdef", "cde"));
-		assertFalse(LineRecursion.isSubstring("abcdef", "dc"));
+		assertFalse(LineRecursion.isSubstring("cdef", "dc"));
+		assertFalse(LineRecursion.isSubstring("abcdef", "af"));
 	}
 	
 	@Test
