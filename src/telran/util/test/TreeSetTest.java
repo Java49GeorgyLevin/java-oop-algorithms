@@ -71,11 +71,34 @@ void setUp() {
 		assertEquals(nNumbers / 2, treeBalanced.width());
 		
 	}
+	
+	@Test
+	void balanceOrderTest() {
+		int[] arrayToBalanceOrder =  {1, 2, 3, 4, 5, 6, 7};
+		int[] expected = {4, 2, 1, 3, 6, 5, 7};
+		balanceOrder(arrayToBalanceOrder);
+		assertArrayEquals(expected, arrayToBalanceOrder);
+		
+	}
+	
 	private void balanceOrder(int[] array) {
 		// TODO 
 		//reorder array such that adding to tree will get a balanced tree
-		
+		int[] tmp = Arrays.copyOf(array, array.length);
+		int iFirst = 0;
+		int iLast = tmp.length - 1;
+		balanceRecursionOrder(array, tmp, 0, iFirst, iLast);	
 	}
+	
+	private void balanceRecursionOrder (int[] array, int[] tmp, int index, int left, int right ) {
+		int iMiddle = (left + right) / 2;
+		if(left <= right) {
+			array[index++] = tmp[iMiddle];
+			balanceRecursionOrder(array, tmp, index, left, iMiddle - 1 );
+			balanceRecursionOrder(array, tmp, index + (right - iMiddle), iMiddle + 1, right );
+		}
+	}
+	
 	@Test
 	void inversionTreeTest() {
 		Integer[] expected = {100, 50, 30, 10, 7, -20};

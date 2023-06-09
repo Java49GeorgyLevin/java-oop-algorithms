@@ -364,8 +364,18 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 
 	public void inversion() {
-		// TODO Auto-generated method stub
-		
+		inversionRecursion(root);
+		comp = comp.reversed();
+	}
+	
+	private void inversionRecursion(Node root) {
+		if(root != null ) {
+			Node tmp = root.left;
+			root.left = root.right;
+			root.right = tmp;
+			inversionRecursion(root.left);
+			inversionRecursion(root.right);
+		}
 	}
 
 }
