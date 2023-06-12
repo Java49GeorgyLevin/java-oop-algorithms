@@ -6,11 +6,12 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import telran.util.ArrayList;
+import telran.util.List;
 import telran.util.Set;
 
 public class TreeSetTest extends SortedSetTest {
@@ -56,8 +57,8 @@ void setUp() {
 	}
 	@Test
 	void balanceTestFromSorted() {
-		int height = 20;
-		int nNumbers =  (int) Math.pow(2, height);
+		int height = 23;
+		int nNumbers =  1 << height;
 		int [] array = new int[nNumbers - 1];
 		for(int i = 0; i < array.length; i++) {
 			array[i] = i;
@@ -72,33 +73,26 @@ void setUp() {
 		
 	}
 	
-	@Test
-	void balanceOrderTest() {
-		int[] arrayToBalanceOrder =  {1, 2, 3, 4, 5, 6, 7};
-		int[] expected = {4, 2, 1, 3, 6, 5, 7};
-		balanceOrder(arrayToBalanceOrder);
-		assertArrayEquals(expected, arrayToBalanceOrder);
+	private void balanceOrder(int[] array) {
+		List<Integer> list = new ArrayList<>();
+		balanceOrder(array, 0, array.length - 1, list);
+		int index = 0;
+		for(int num: list) {
+			array[index++] = num;
+		}
+		
 		
 	}
-	
-	private void balanceOrder(int[] array) {
-		// TODO 
-		//reorder array such that adding to tree will get a balanced tree
-		int[] tmp = Arrays.copyOf(array, array.length);
-		int iFirst = 0;
-		int iLast = tmp.length - 1;
-		balanceRecursionOrder(array, tmp, 0, iFirst, iLast);	
-	}
-	
-	private void balanceRecursionOrder (int[] array, int[] tmp, int index, int left, int right ) {
-		int iMiddle = (left + right) / 2;
+	private void balanceOrder(int[] array, int left, int right,
+			List<Integer> list) {
 		if(left <= right) {
-			array[index++] = tmp[iMiddle];
-			balanceRecursionOrder(array, tmp, index, left, iMiddle - 1 );
-			balanceRecursionOrder(array, tmp, index + (right - iMiddle), iMiddle + 1, right );
+			int middle = (left + right) / 2;
+			list.add(array[middle]);
+			balanceOrder(array, left, middle - 1, list);
+			balanceOrder(array, middle + 1, right, list);
 		}
+		
 	}
-	
 	@Test
 	void inversionTreeTest() {
 		Integer[] expected = {100, 50, 30, 10, 7, -20};
