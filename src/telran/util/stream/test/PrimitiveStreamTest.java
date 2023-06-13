@@ -50,5 +50,17 @@ class PrimitiveStreamTest {
 		assertEquals(array.length, set.size());
 
 	}
-
+	
+	@Test
+	void ShuffleTest() {
+		int[] arrayBefore = randomUnique(N_NUMBERS, MIN_NUMBER, MAX_NUMBER);
+		int[] arrayShuffle = shuffle(arrayBefore);
+		int sum = 0;
+		for(int ind = 0; ind < arrayBefore.length; ind++) {
+			if(arrayBefore[ind] == arrayShuffle[ind]) {
+				++sum;
+			}			
+		}
+		assertTrue(sum < arrayBefore.length / 100);	
+	}
 }
