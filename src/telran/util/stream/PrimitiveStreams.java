@@ -1,11 +1,8 @@
 package telran.util.stream;
 
-import java.util.Arrays;
 import java.util.Random;
-import java.util.function.IntConsumer;
 
 import telran.util.ArrayList;
-import telran.util.Collection;
 import telran.util.List;
 
 public class PrimitiveStreams {
@@ -19,17 +16,21 @@ public class PrimitiveStreams {
 	}
 	
 	static public int[] shuffle(int[] array) {
-		int[] arShuffle = new int[array.length];
-//		List<Integer> list = new ArrayList<>();
+		 
+		//returns new array with shuffled numbers
+		//Implementation hints: two stream pipes
+		//first stream pipe fills telran.util.ArrayList<Integer> with array's numbers in the
+		// random order ( apply the same approach
+		// as in the randomUnique method with forEach instead of toArray for
+		// adding numbers to the ArrayList
+		// 
+		//second stream pipe creates array of int's from telran.util.ArrayList as we have done at class
+		int [] res = new int[array.length];
+	    int []index = {0};
+		new Random().ints(0, array.length).distinct().limit(array.length)
+		.forEach(i -> res[index[0]++] = array[i]);
 		
-		int[] index = {0};
-
-		new Random().ints(0, array.length)
-			.distinct().limit(array.length)
-			.forEach(i -> arShuffle[index[0]++] = array[i]);
-//		arShuffle = list.stream().mapToInt(n -> n).toArray();
-
-		return arShuffle;
+		return res;
 	}
 
 }

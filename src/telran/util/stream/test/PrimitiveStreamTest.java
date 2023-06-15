@@ -10,6 +10,7 @@ import static telran.util.stream.PrimitiveStreams.*;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 class PrimitiveStreamTest {
 
@@ -28,6 +29,20 @@ class PrimitiveStreamTest {
 			runArrayNotEqualTest(arrayPrev, arrayNext);
 			arrayPrev = arrayNext;
 
+		}
+	}
+	@Test
+	void shuffleTest() {
+		int [] array = new Random().ints(100).sorted().toArray();
+		
+		int [] arrayPrev = shuffle(array);
+		for(int i = 0; i < 100; i++) {
+			int [] arrayNext = shuffle(array);
+			runArrayNotEqualTest(arrayPrev, arrayNext);
+			Arrays.sort(arrayPrev);
+			assertArrayEquals(arrayPrev, array);
+			arrayPrev = arrayNext;
+			
 		}
 	}
 
@@ -51,20 +66,5 @@ class PrimitiveStreamTest {
 		assertEquals(array.length, set.size());
 
 	}
-	
-	@Test
-	void ShuffleTest() {
-		int[] array = new Random().ints(N_NUMBERS).distinct().sorted().toArray();
-		int[] arrayShuffle = shuffle(array);		
 
-		for(int i = 0; i < N_NUMBERS; i++) {
-			arrayShuffle = shuffle(arrayShuffle);
-			runArrayNotEqualTest(array, arrayShuffle);
-			
-			int[] arrayMoreShuffle = shuffle(arrayShuffle);
-			runArrayNotEqualTest(arrayShuffle, arrayMoreShuffle);
-			Arrays.sort(arrayMoreShuffle);
-			assertArrayEquals(array, arrayMoreShuffle);
-	}
-	}
 }
