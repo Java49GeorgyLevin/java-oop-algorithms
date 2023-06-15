@@ -9,6 +9,7 @@ import telran.util.HashSet;
 import static telran.util.stream.PrimitiveStreams.*;
 
 import java.util.Arrays;
+import java.util.Random;
 
 class PrimitiveStreamTest {
 
@@ -53,14 +54,17 @@ class PrimitiveStreamTest {
 	
 	@Test
 	void ShuffleTest() {
-		int[] arrayBefore = randomUnique(N_NUMBERS, MIN_NUMBER, MAX_NUMBER);
-		int[] arrayShuffle = shuffle(arrayBefore);
-		int sum = 0;
-		for(int ind = 0; ind < arrayBefore.length; ind++) {
-			if(arrayBefore[ind] == arrayShuffle[ind]) {
-				++sum;
-			}			
-		}
-		assertTrue(sum < arrayBefore.length / 100);	
+		int[] array = new Random().ints(N_NUMBERS).distinct().sorted().toArray();
+		int[] arrayShuffle = shuffle(array);		
+
+		for(int i = 0; i < N_NUMBERS; i++) {
+			arrayShuffle = shuffle(arrayShuffle);
+			runArrayNotEqualTest(array, arrayShuffle);
+			
+			int[] arrayMoreShuffle = shuffle(arrayShuffle);
+			runArrayNotEqualTest(arrayShuffle, arrayMoreShuffle);
+			Arrays.sort(arrayMoreShuffle);
+			assertArrayEquals(array, arrayMoreShuffle);
+	}
 	}
 }

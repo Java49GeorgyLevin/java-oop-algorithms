@@ -6,6 +6,7 @@ import java.util.function.IntConsumer;
 
 import telran.util.ArrayList;
 import telran.util.Collection;
+import telran.util.List;
 
 public class PrimitiveStreams {
 	static public int[] randomUnique(int nNumbers, int minInclusive,
@@ -19,12 +20,14 @@ public class PrimitiveStreams {
 	
 	static public int[] shuffle(int[] array) {
 		int[] arShuffle = new int[array.length];
-		ArrayList<Integer> list = new ArrayList<>();
+//		List<Integer> list = new ArrayList<>();
+		
+		int[] index = {0};
 
 		new Random().ints(0, array.length)
 			.distinct().limit(array.length)
-			.forEach(i -> list.add(array[i]));
-		arShuffle = list.stream().mapToInt(n -> n).toArray();
+			.forEach(i -> arShuffle[index[0]++] = array[i]);
+//		arShuffle = list.stream().mapToInt(n -> n).toArray();
 
 		return arShuffle;
 	}
