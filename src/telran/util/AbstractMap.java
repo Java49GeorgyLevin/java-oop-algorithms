@@ -25,13 +25,31 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	@Override
 	public boolean containsKey(K key) {
 		// TODO Auto-generated method stub
-		return false;
+		if(key == null) {
+			new NullPointerException();
+		}
+		boolean res = false;
+		Entry<K, V> entry = set.get(new Entry<>(key, null));
+		if(entry != null) {
+			res = true;
+		}		
+		return res;
 	}
 
 	@Override
 	public boolean containsValue(V value) {
 		// TODO Auto-generated method stub
-		return false;
+		if(value == null) {
+			new NullPointerException();
+		}
+		boolean res = false;
+		Set<K> setKey = keySet();
+		for(K k: setKey) {
+				if(res == false && get(k).equals(value)) {
+					res = true;
+				}
+		}
+		return res;
 	}
 
 	@Override
@@ -46,7 +64,10 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	@Override
 	public Collection<V> values() {
 		// TODO Auto-generated method stub
-		return null;
+		Collection<V> collectionValues = new LinkedList<>();
+		set.stream().map(e -> e.getValue()).forEach(value -> collectionValues.add(value));
+
+		return collectionValues;
 	}
 
 	@Override
@@ -57,7 +78,17 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	@Override
 	public V remove(K key) {
 		//TODO
-		return null;
+		if(key == null) {
+			new NullPointerException();
+		}
+		V valueRemoved = null;
+		if(containsKey(key)) {			
+			valueRemoved = get(key);
+			Entry<K, V> entry = new Entry<>(key, valueRemoved);
+			set.remove(entry);			
+		}		
+
+		return valueRemoved;
 	}
 
 }
