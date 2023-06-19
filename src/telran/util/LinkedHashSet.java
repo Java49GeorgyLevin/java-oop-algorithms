@@ -1,6 +1,7 @@
 package telran.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedHashSet<T> implements Set<T> {
     int size;
@@ -11,26 +12,44 @@ public class LinkedHashSet<T> implements Set<T> {
     	Node(T obj) {
     		this.obj = obj;
     	}
+    	private void setNull() {
+    		this.obj = null;       		
+    	}
     }
     Node<T> head;
     Node<T> tail;
     HashMap<T, Node<T>> map = new HashMap<>();
     private class LinkedHashSetIterator implements Iterator<T> {
+    	Node<T> current = head;
+    	boolean flNext = false;
 
 		@Override
-		public boolean hasNext() {
+		public boolean hasNext() {	
 			// TODO Auto-generated method stub
-			return false;
+			return current != null;
 		}
 
 		@Override
 		public T next() {
 			// TODO Auto-generated method stub
-			return null;
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T res = current.obj;
+			current = current.next;
+			flNext = true;
+			return res;
 		}
+		
 		@Override
 		public void remove() {
 			//TODO
+			if(!flNext) {
+				new IllegalStateException();
+			}
+			Node<T> removedNode = current != null ? current.prev : tail;
+			LinkedHashSet.this.remove(removedNode.obj);			
+			flNext = false;
 		}
     	
     }
@@ -49,7 +68,13 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	private void addNode(Node<T> node) {
 		// TODO Auto-generated method stub
-		
+		if(head == null) {
+			head = tail = node;
+		} else {
+			node.prev = tail;
+			tail.next = node;			
+			tail = node;
+		}		
 	}
 
 	@Override
@@ -73,7 +98,22 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	private void removeNode(Node<T> node) {
 		// TODO Auto-generated method stub
-		
+		if(head == node && tail == node) {
+			head.setNull();
+			tail.setNull();			
+		}
+		else if(head == node) {			
+			head = node.next;
+			node.next.prev.setNull();
+		}
+		else if(tail == node) {
+			tail = node.prev;
+			node.prev.next.setNull();			
+		} else {			
+		node.prev.next = node.next;
+		node.next.prev = node.prev;
+		}
+		node.setNull();
 	}
 
 	@Override

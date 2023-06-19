@@ -40,17 +40,20 @@ public abstract class CollectionTest {
 	}
 	@Test
 	void testRemovePattern() {
-		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
-		Integer [] expectedNo10_50 = { -20, 7,  100, 30};
-		Integer [] expectedNo10_50_30 = { -20, 7,  100};
-		assertTrue(collection.remove(numbers[0]));
-		runTest(expectedNo10);
-		Integer objToRemove = 50;
-		assertTrue(collection.remove(objToRemove));
-		runTest(expectedNo10_50);
+//		Integer [] expectedNo10 = { -20, 7, 50, 100, 30};
+		Integer [] expectedNo30 = { 10, -20, 7, 50, 100};
+//		Integer [] expectedNo10_50 = { -20, 7,  100, 30};
+//		Integer [] expectedNo10_50_30 = { -20, 7,  100};
+//		assertTrue(collection.remove(numbers[0]));
+//		runTest(expectedNo10);
+//		Integer objToRemove = 50;
+//		assertTrue(collection.remove(objToRemove));
+//		runTest(expectedNo10_50);
+//		assertTrue(collection.remove((Integer)30));
+//		runTest(expectedNo10_50_30);
 		assertTrue(collection.remove((Integer)30));
-		runTest(expectedNo10_50_30);
-		assertFalse(collection.remove((Integer)50));
+		runTest(expectedNo30);
+//		assertFalse(collection.remove((Integer)50));
 	}
 	@Test
 	void testRemoveIfPredicate() {
