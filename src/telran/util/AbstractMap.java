@@ -24,32 +24,14 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
 	@Override
 	public boolean containsKey(K key) {
-		// TODO Auto-generated method stub
-		if(key == null) {
-			new NullPointerException();
-		}
-		boolean res = false;
-		Entry<K, V> entry = set.get(new Entry<>(key, null));
-		if(entry != null) {
-			res = true;
-		}		
-		return res;
+		
+		return set.contains(new Entry<K, V>(key, null));
 	}
 
 	@Override
 	public boolean containsValue(V value) {
-		// TODO Auto-generated method stub
-		if(value == null) {
-			new NullPointerException();
-		}
-		boolean res = false;
-		Set<K> setKey = keySet();
-		for(K k: setKey) {
-				if(res == false && get(k).equals(value)) {
-					res = true;
-				}
-		}
-		return res;
+		
+		return set.stream().anyMatch(e -> e.getValue().equals(value));
 	}
 
 	@Override
@@ -63,11 +45,9 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
 	@Override
 	public Collection<V> values() {
-		// TODO Auto-generated method stub
-		Collection<V> collectionValues = new LinkedList<>();
-		set.stream().map(e -> e.getValue()).forEach(value -> collectionValues.add(value));
-
-		return collectionValues;
+		List<V> res = new ArrayList<V>();
+		set.stream().map(e -> e.getValue()).forEach(v -> res.add(v));
+		return res;
 	}
 
 	@Override
@@ -77,18 +57,13 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	}
 	@Override
 	public V remove(K key) {
-		//TODO
-		if(key == null) {
-			new NullPointerException();
+		Entry<K, V> entry = set.get(new Entry<K, V>(key, null));
+		V res = null;
+		if(entry != null) {
+			res = entry.getValue();
+			set.remove(entry);
 		}
-		V valueRemoved = null;
-		if(containsKey(key)) {			
-			valueRemoved = get(key);
-			Entry<K, V> entry = new Entry<>(key, valueRemoved);
-			set.remove(entry);			
-		}		
-
-		return valueRemoved;
+		return res;
 	}
 
 }
