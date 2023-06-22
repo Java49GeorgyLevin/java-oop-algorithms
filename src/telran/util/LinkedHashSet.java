@@ -3,6 +3,8 @@ package telran.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+
+
 public class LinkedHashSet<T> implements Set<T> {
     int size;
     private static class Node<T> {
@@ -12,9 +14,6 @@ public class LinkedHashSet<T> implements Set<T> {
     	Node(T obj) {
     		this.obj = obj;
     	}
-    	private void setNull() {
-    		this.obj = null;       		
-    	}
     }
     Node<T> head;
     Node<T> tail;
@@ -22,17 +21,15 @@ public class LinkedHashSet<T> implements Set<T> {
     private class LinkedHashSetIterator implements Iterator<T> {
     	Node<T> current = head;
     	boolean flNext = false;
-
 		@Override
-		public boolean hasNext() {	
-			// TODO Auto-generated method stub
+		public boolean hasNext() {
+			
 			return current != null;
 		}
 
 		@Override
 		public T next() {
-			// TODO Auto-generated method stub
-			if (!hasNext()) {
+			if(!hasNext()) {
 				throw new NoSuchElementException();
 			}
 			T res = current.obj;
@@ -40,18 +37,13 @@ public class LinkedHashSet<T> implements Set<T> {
 			flNext = true;
 			return res;
 		}
-		
 		@Override
 		public void remove() {
-			//TODO
 			if(!flNext) {
 				throw new IllegalStateException();
 			}
-			Node<T> removedNode = current != null ? current.prev : tail;
-			LinkedHashSet.this.remove(removedNode.obj);	
-//			removeNode(removedNode);
-//			map.remove(removedNode.obj);
-//			size--;
+			Node<T> nodeForRemove = current != null ? current.prev : tail;
+			LinkedHashSet.this.remove(nodeForRemove.obj);
 			flNext = false;
 		}
     	
@@ -70,14 +62,14 @@ public class LinkedHashSet<T> implements Set<T> {
 	}
 
 	private void addNode(Node<T> node) {
-		// TODO Auto-generated method stub
 		if(head == null) {
 			head = tail = node;
 		} else {
+			tail.next = node;
 			node.prev = tail;
-			tail.next = node;			
 			tail = node;
-		}		
+		}
+		
 	}
 
 	@Override
@@ -100,43 +92,39 @@ public class LinkedHashSet<T> implements Set<T> {
 	}
 
 	private void removeNode(Node<T> node) {
-		// TODO Auto-generated method stub
-		if(node == head) {	
-			removeHead(node);
-		}
-		else if(node == tail) {
-			removeTail(node);
+		if (node == head) {
+			removeHead();
+		} else if (node == tail) {
+			removeTail();
 		} else {
 			removeMiddle(node);
 		}
-//		node.setNull();
+		
+		
 	}
-	
-	private void removeHead(Node<T> node) {
+	private void removeHead() {
 		Node<T> newHead = head.next;
-		if(newHead != null) {
+		if (newHead != null) {
 			newHead.prev = null;
 		}
 		head.next = null;
 		head = newHead;
+
 	}
-	
-	private void removeTail(Node<T> node) {
-		Node<T> newTail = tail.prev;
-		if(newTail != null) {
-			newTail.next = null;
-		}
-		tail.prev = null;
-		tail = newTail;
-	}
-	
 	private void removeMiddle(Node<T> node) {
 		Node<T> nodeBefore = node.prev;
 		Node<T> nodeAfter = node.next;
 		nodeBefore.next = nodeAfter;
 		nodeAfter.prev = nodeBefore;
-//		node.setNull();
-		node.prev = node.next = null;	
+		node.next = node.prev = null;
+	}
+	private void removeTail() {
+		Node<T> newTail = tail.prev;
+		if (newTail != null) {
+			newTail.next = null;
+		}
+		tail.prev = null;
+		tail = newTail;
 	}
 
 	@Override
